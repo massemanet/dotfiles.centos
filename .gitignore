@@ -1,0 +1,14 @@
+.gitconfig
+
+# droppings
+.bash_history
+.lesshst
+*~
+/.ssh/
+
+# erlang droppings
+erl_crash.dump
+.erlang.cookie
+
+# git projects
+/git/
