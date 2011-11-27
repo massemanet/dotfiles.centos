@@ -1,5 +1,6 @@
 ;; -*- mode: lisp -*-
 
+;; from emacs 24
 (load-theme 'tango-dark)
 
 (setq safe-local-variable-values
@@ -52,8 +53,6 @@
 (defvar erlang-erl-path "/usr/local")
 (defvar erlang-distel-path "~/git/distel")
 (defvar erlang-erlmode-path "~/elisp")
-;"/usr/local/Cellar/erlang/R14B03/lib/erlang/lib/tools-*/emacs")
-
 
 (defvar paths
   (list

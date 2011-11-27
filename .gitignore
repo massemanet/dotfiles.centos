@@ -1,5 +1,7 @@
 .gitconfig
 
+/.gnupg/
+
 # droppings
 .bash_history
 .lesshst
