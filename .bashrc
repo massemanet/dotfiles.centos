@@ -13,9 +13,6 @@ export LANG=en_US
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# check for GNU ls from brew
-LS=ls ; [ `which gls` ] && LS=gls
-
 # Enable sane completion
 . /etc/bash_completion.d/git
 . /etc/bash_completion
