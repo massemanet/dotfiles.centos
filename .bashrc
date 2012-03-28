@@ -2,19 +2,19 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
 # one path to rule them all
-export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
 
 # two locales to rule them all
 unset  LC_ALL
 unset  LANGUAGE
+unset  LC_CTYPE
 export LANG=en_US
-export LC_ALL=en_US
-#export LC_CTYPE=sv_SE
-#export LC_TIME=en_DK
-#export LC_PAPER=sv_SE
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
+
+# check for GNU ls from brew
+LS=ls ; [ `which gls` ] && LS=gls
 
 # Enable sane completion
 . /etc/bash_completion.d/git
@@ -55,6 +55,7 @@ if [ "$TERM" != "dumb" ]; then
     export GIT_PS1_SHOWUNTRACKEDFILES=true
     unset GIT_PS1_SHOWDIRTYSTATE
     PROMPT_COMMAND='if [ $? -ne 0 ]; then ERROR_FLAG=1; else ERROR_FLAG=; fi'
+
     if [ "$USER" == "root" ];then
         PS1='\[$(tput setaf 5)\]\h\[$(tput setaf 3)\]($(mygitdir):$(__git_ps1 "%s"))\[$(tput setaf 2)\]${ERROR_FLAG:+\[$(tput setaf 1)\]}#\[$(tput sgr0)\] '
     else
@@ -73,6 +74,8 @@ rea()  { history | egrep "${@:-}";}
 m()    { less "$@";}
 e()    { emacs -nw "$@";}
 c()    { cat "$@";}
+
+export EDITOR=e
 
 ## history
 # lots of history
