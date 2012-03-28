@@ -1,13 +1,6 @@
 ;; -*- mode: lisp -*-
 
-;; from emacs 24
-(load-theme 'tango-dark)
-
-(setq safe-local-variable-values
-      (quote ((erlang-indent-level . 4)
-              (erlang-indent-level . 2))))
-
-; turn on shit
+; turn on good shit
 (set-language-environment "Latin-1")
 (show-paren-mode t)
 (transient-mark-mode t)
@@ -15,23 +8,47 @@
 (delete-selection-mode t)
 (column-number-mode t)
 (iswitchb-mode t)
+(if (fboundp 'custom-available-themes)
+    (if (member 'tango-dark (custom-available-themes))
+	(load-theme 'tango-dark)
+      (if (fboundp 'color-theme-initialize)
+	  (progn
+	    (color-theme-initialize)
+	    (color-theme-calm-forest)))))
 
-; turn off shit
-(global-hl-line-mode -1)
-(if (featurep 'tool-bar) (tool-bar-mode -1))
-(if (featurep 'tooltip) (tooltip-mode -1))
+(if (locate-library "package")
+    (progn
+      (require 'package)
+      (package-initialize)
+      (add-to-list 'package-archives
+		   '("ELPA" . "http://tromey.com/elpa/"))
+      (add-to-list 'package-archives
+		   '("marmalade" . "http://marmalade-repo.org/packages/"))))
+
+; turn off bad shit
+(if (featurep 'tool-bar)   (tool-bar-mode   -1))
+(if (featurep 'tabbar)     (tabbar-mode	    -1))
+(if (featurep 'tooltip)    (tooltip-mode    -1))
 (if (featurep 'scroll-bar) (scroll-bar-mode -1))
-(menu-bar-mode -1)
+(if (featurep 'menu-bar)   (menu-bar-mode   -1))
+
+(setq-default
+ indent-tabs-mode         nil)
 
 (setq
- align-to-tab-stop nil
- indent-tabs-mode nil
- browse-url-browser-function 'w3m-browse-url
- user-mail-address "masse@klarna.com"
- inhibit-startup-screen t
- special-display-regexps nil
- visible-bell t)
+ align-to-tab-stop        nil
+ default-input-method     "swedish-postfix"
+ inhibit-startup-screen   t
+ max-lisp-eval-depth      40000
+ scroll-down-aggressively 0.1
+ scroll-up-aggressively   0.1
+ special-display-regexps  nil
+ user-mail-address        "masse@klarna.com"
+ utf-translate-cjk-mode   nil
+ visible-bell             t)
 
+(global-set-key (kbd "M-N") 'last-line)
+(global-set-key (kbd "M-P") 'first-line)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-c b") 'bury-buffer)
 (global-set-key (kbd "C-c p") 'point-to-register)
@@ -50,22 +67,38 @@
 (global-set-key (kbd "M-z") 'undo) ; if screen eats C-z
 (global-set-key (kbd "C-x C-r") 'revert-buffer)
 
-(defvar erlang-erl-path "/usr/local")
-(defvar erlang-distel-path "~/git/distel")
-(defvar erlang-erlmode-path "~/elisp")
+(defun last-line () 
+  (interactive)
+  (recenter -2))
 
-(defvar paths
-  (list
-   "~/elisp"
-   (car (file-expand-wildcards erlang-erlmode-path))
-   "/usr/share/doc/git/contrib/emacs"
-   (concat erlang-distel-path "/elisp")))
+(defun first-line () 
+  (interactive)
+  (recenter 1))
 
-(dolist (f (nreverse paths))
+(defun add-paths (ps)
+  (dolist (f (nreverse ps))
   (when (and (stringp f) (file-exists-p f))
-    (add-to-list 'load-path f)))
+    (add-to-list 'load-path f))))
+
+(add-paths (list "~/elisp"))
 
 (defun my-erlang-setup ()
+
+  (setq safe-local-variable-values
+	(quote ((erlang-indent-level . 4)
+		(erlang-indent-level . 2))))
+
+  (defvar erlang-erl-path
+    (shell-command-to-string "echo -n `brew --prefix erlang`"))
+  (defvar erlang-distel-path "~/git/distel")
+  (defvar erlang-erlmode-path "~/elisp")
+
+  (add-paths (list 
+	      (car (file-expand-wildcards erlang-erlmode-path))
+	      (car (file-expand-wildcards
+		    (concat erlang-erl-path "/lib/erlang/lib/tools-*/emacs")))
+	      (concat erlang-distel-path "/elisp")))
+
   ;; use to start an erlang shell with boot flags
 
   (defun erl-shell (flags)
@@ -88,22 +121,23 @@
 
   (add-hook 'erlang-load-hook 'my-erlang-load-hook)
   (defun my-erlang-load-hook ()
-    (setq erl-atom-face              'default);'font-lock-doc-face)
-    (setq erl-quotes-face            'font-lock-doc-string-face)
-    (setq erl-list-operator-face     'font-lock-warning-face)
-    (setq erl-match-operator-face    'font-lock-warning-face)
-    (setq erl-operator-face          'font-lock-warning-face)
-    (setq erl-arrow-face             'font-lock-keyword-face)
-    (setq erl-ext-function-call-face 'font-lock-constant-face)
-    (setq erl-int-function-call-face 'font-lock-constant-face)
-    (setq erl-macro-face             'font-lock-preprocessor-face)
-    (setq erl-record-face            'font-lock-preprocessor-face)
+    (setq
+     ;; syntax haighlighting
+     erl-atom-face              'default         ;'font-lock-doc-face
+     erl-quotes-face            'font-lock-doc-string-face
+     erl-list-operator-face     'font-lock-warning-face
+     erl-match-operator-face    'font-lock-warning-face
+     erl-operator-face          'font-lock-warning-face
+     erl-arrow-face             'font-lock-keyword-face
+     erl-ext-function-call-face 'font-lock-constant-face
+     erl-int-function-call-face 'font-lock-constant-face
+     erl-macro-face             'font-lock-preprocessor-face
+     erl-record-face            'font-lock-preprocessor-face
 
-    ;; i need some space
-    (setq erlang-indent-level 2)
-    ;; find the man pages
-    (setq erlang-root-dir erlang-erl-path))
-
+     ;; i need some space
+     erlang-indent-level 2
+     ;; find the man pages
+     setq erlang-root-dir erlang-erl-path))
 
   (add-hook 'erlang-new-file-hook 'my-erlang-new-file-hook)
   (defun my-erlang-new-file-hook ()
@@ -122,12 +156,23 @@
 
   (add-hook 'erlang-mode-hook 'my-erlang-mode-hook)
   (defun my-erlang-mode-hook ()
+    (defun erl-align-arrows ()
+      (interactive)
+      (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)->" 1 1))
     ;; run flymake iff buffer has a file
     (local-set-key (kbd "M-L") 'erl-show-arglist)
     (local-set-key (kbd "M-A") 'erl-align-arrows)
     (if (and (locate-library "erlang-flymake")
              buffer-file-truename)
         (progn
+          (defun erlang-flymake-next-error ()
+            "Goto next error, if any. Display error in mini-buffer."
+            (interactive)
+            (flymake-goto-next-error)
+            (let ((err (get-char-property (point) 'help-echo)))
+              (when err
+                (message err))))
+          (setq flymake-no-changes-timeout 3)
           (load "erlang-flymake")
           (flymake-mode)
           (local-set-key (kbd "M-'") 'erlang-flymake-next-error)))
@@ -147,10 +192,6 @@
                (if (file-exists-p "../ebin") "-o ../ebin " "")
                (if (file-exists-p "../inc") "-I ../inc " "")
                "+debug_info -W " buffer-file-name))))))
-
-(defun erl-align-arrows ()
-  (interactive)
-  (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)->" 1 1))
 
 (defun my-js-setup()
   (autoload 'js2-mode "js2" nil t)
@@ -173,6 +214,9 @@
   (require 'psvn)
   (setq svn-status-custom-hide-function 'my-svn-status-hide))
 
+(if (locate-library "fdlcap")
+    (require 'fdlcap))
+
 (if (locate-library "magit")
     (require 'magit))
 
@@ -187,10 +231,22 @@
 
 (if (locate-library "git")
     (require 'git))
+
 (if (locate-library "git-blame")
     (progn
       (require 'format-spec)
       (require 'git-blame)))
+
+(if (locate-library "highlight-parentheses")
+    (progn
+      (require 'highlight-parentheses)
+      (setq hl-paren-colors '("firebrick1" "color-160" "color-88"
+                              "IndianRed4" "brightred" "white"))
+      (define-globalized-minor-mode global-highlight-parentheses-mode
+	highlight-parentheses-mode
+	(lambda ()
+	  (highlight-parentheses-mode t)))
+      (global-highlight-parentheses-mode t)))
 
 (if (locate-library "erlang-start")
     (progn
@@ -199,22 +255,19 @@
       (if (locate-library "distel")
           (my-distel-setup))))
 
-(if (locate-library "color-theme")
-    (progn
-      (require 'color-theme)
-      (color-theme-initialize)
-      (condition-case nil
-          (progn
-            (load-library "color-theme-masse")
-            (color-theme-masse))
-        (error (color-theme-calm-forest)))))
-
-(if (locate-library "fdlcap")
-    (require 'fdlcap))
-
 (defun my-svn-status-hide (line-info)
   "Hide externals."
   (eq (svn-status-line-info->filemark line-info) ?X))
+
+(add-hook 'text-mode-hook 'my-text-mode-hook)
+(defun my-text-mode-hook ()
+  (setq fill-column 79)
+  (longlines-mode t)
+  (setq outline-minor-mode-prefix "")
+  (outline-minor-mode)
+  (highlight-parentheses-mode -1)
+  (setq flyspell-dictionaries (quote ("american" "svenska")))
+  (flyspell-mode))
 
 (add-hook 'comint-mode-hook 'my-comint)
 (defun my-comint ()
@@ -225,25 +278,6 @@
   (local-set-key [up] 'comint-previous-input)
   (local-set-key [down] 'comint-next-input))
 
-(defun k-find (word &optional ext)
-  (grep-find
-   (concat "find "
-           (concat (car (split-string (buffer-file-name) "lib")) "lib/")
-           (concat " -name '.svn' -prune -o -name '*~' -prune -o -name '*beam'"
-                   " -prune -o -name '*html' -prune -o -type f -name '*"
-                   ext
-                   "' -print0 | xargs -0 -e grep -n -e "
-                   word))))
-
-
-(defun kfind (word)
-  (interactive "MFind: ")
-  (k-find word))
-
-(defun kefind (word)
-  (interactive "MFind: ")
-  (k-find word "rl"))
-
 (defun indent-buffer ()
   "indent current buffer"
   (interactive)
@@ -253,59 +287,47 @@
 (if window-system
     (set-background-color "black"))
 
-;; http://hugoheden.wordpress.com/2009/03/08/copypaste-with-emacs-in-terminal
-;; http://shreevatsa.wordpress.com/2006/10/22/emacs-copypaste-and-x/
-;; http://www.mail-archive.com/help-gnu-emacs@gnu.org/msg03577.html
-
-;;(unless (or (not (getenv "DISPLAY")) window-system)
-;;  (defun xsel-cut-function (text &optional push)
-;;    (interactive "MPush to X selection: ")
-;;    (with-temp-buffer
-;;      (insert text)
-;;      (call-process-region
-;;       (point-min) (point-max) "xsel" nil 0 nil "--input")))
-;;  (defun xsel-paste-function()
-;;    (interactive)
-;;    (let ((xsel-output (shell-command-to-string "xsel --output")))
-;;      (unless (string= (car kill-ring) xsel-output)
-;;        xsel-output )))
-;;  (setq interprogram-cut-function 'xsel-cut-function)
-;;  (setq interprogram-paste-function 'xsel-paste-function))
-
 (defun my-erc ()
   "start erc, connect to some servers, join some channels"
   (interactive)
   (set-language-environment "utf-8")
-  (setq default-input-method "swedish-postfix")
-  (setq erc-autojoin-channels-alist
-        '(("freenode.net" "#erlang"); "#nitrogen")
-;          ("foonetic.net" "#xkcd")
-          ("hq.kred" "#tech")))
-;  (setq erc-spelling-dictionaries '(("irc.hq.kred:6667" "svenska")))
+  (setq default-input-method "swedish-postfix"
+	erc-hide-list '("JOIN" "NICK" "PART" "QUIT")
+	erc-modules '(autojoin completion fill irccontrols match noncommands
+			       readonly ring scrolltobottom stamp spelling
+			       track truncate)
+	erc-autojoin-channels-alist '(("freenode.net" "#erlang")
+				      ("internal.machines" "#tech")))
   (erc :server "irc.freenode.net" :nick "massemanet")
-;  (erc :server "irc.foonetic.net" :nick "masse")
   (erc :server "irc.hq.kred" :nick "masse"))
 
-;; automatically added stuff
+(defun my-elpa ()
+  (interactive)
+  (package-refresh-contents)
+  (dolist (p '(magit highlight-parentheses clojure-mode js2-mode slime))
+    (progn
+      (if (package-installed-p p)
+          (message "already installed %s" p)
+        (package-install p)))))
 
+
+;; automatically added stuff
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(magit-diff-add ((t (:foreground "green"))))
+ '(magit-diff-del ((t (:foreground "red"))))
+ '(magit-item-highlight ((t (:background "color-239")))))
+
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(default-input-method "swedish-postfix")
- '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT")))
- '(erc-modules (quote (autojoin completion fill irccontrols match noncommands readonly ring scrolltobottom stamp spelling track truncate)))
- '(flymake-no-changes-timeout 3)
- '(flyspell-dictionaries (quote ("american" "svenska")))
- '(gnus-novice-user nil)
- '(indent-tabs-mode nil)
- '(max-lisp-eval-depth 40000)
- '(safe-local-variable-values (quote ((erlang-indent-level . 4) (erlang-indent-level . 2))))
- '(scroll-down-aggressively 0.1)
- '(scroll-up-aggressively 0.1)
- '(utf-translate-cjk-mode nil))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
