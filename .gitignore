@@ -3,10 +3,15 @@
 /.gnupg/
 
 # droppings
-.bash_history
-.lesshst
 *~
+/.Xauthority
+/.aptitude/
+/.bash_history
+/.cache/
+/.emacs.d/
+/.lesshst
 /.ssh/
+/.sudo_as_admin_successful
 
 # erlang droppings
 erl_crash.dump
