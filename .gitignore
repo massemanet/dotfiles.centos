@@ -12,6 +12,7 @@
 /.lesshst
 /.ssh/
 /.sudo_as_admin_successful
+/rpm/
 
 # erlang droppings
 erl_crash.dump
