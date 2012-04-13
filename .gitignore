@@ -12,6 +12,7 @@
 /.lesshst
 /.ssh/
 /.sudo_as_admin_successful
+/foo.*
 /rpm/
 
 # erlang droppings
