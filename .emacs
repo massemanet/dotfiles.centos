@@ -88,8 +88,7 @@
 	(quote ((erlang-indent-level . 4)
 		(erlang-indent-level . 2))))
 
-  (defvar erlang-erl-path
-    (shell-command-to-string "echo -n `brew --prefix erlang`"))
+  (defvar erlang-erl-path "/usr")
   (defvar erlang-distel-path "~/git/distel")
   (defvar erlang-erlmode-path "~/elisp")
 
@@ -159,12 +158,28 @@
     (defun erl-align-arrows ()
       (interactive)
       (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)->" 1 1))
-    ;; run flymake iff buffer has a file
     (local-set-key (kbd "M-L") 'erl-show-arglist)
     (local-set-key (kbd "M-A") 'erl-align-arrows)
+
+    ;; run flymake iff buffer has a file
     (if (and (locate-library "erlang-flymake")
              buffer-file-truename)
         (progn
+          (defun updir (n f)
+            (if (eq n 0)
+                f
+              (x (- n 1) (substring (file-name-directory f) 0 -1))))
+
+          (defun epath (f)
+            (interactive)
+            (cond
+             ((string= (file-name-nondirectory (updir 3 f)) "lib")
+              (file-expand-wildcards (concat (updir 3 f) "/*/ebin")))
+             ((string= (file-name-nondirectory (updir 1 f)) "src")
+              (file-expand-wildcards (concat (updir 2 f) "/ebin")))
+             (t 
+              (updir 1 f))))
+
           (defun erlang-flymake-next-error ()
             "Goto next error, if any. Display error in mini-buffer."
             (interactive)
