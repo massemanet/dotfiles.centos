@@ -1,0 +1,25 @@
+# -*- mode: conf -*-
+[user]
+  name = mats cronqvist
+  email = masse@klarna.com
+
+[github]
+  user = massemanet
+
+[color]
+   ui = auto
+
+[alias]
+  st = status
+  lol   = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  in    = log HEAD..origin/master
+  out   = log origin/master..HEAD
+  unstage = reset HEAD --
+  last = log -1 HEAD
+  whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+  who = "!git shortlog -s -- | sort -n -k1"
+  alias = "!git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'"
+
+[core]
+# global per user gitignore file
+  excludesfile = "~/.gitignore_global"
