@@ -1,12 +1,14 @@
 # droppings
 *~
 
-/.kredinit*
+*.beam
 /.bash_history
 /.cache/
 /.emacs.d/
 /.lesshst
 /.ssh/
+
+/.kredinit*
 /foo.*
 
 # erlang droppings
