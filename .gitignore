@@ -9,6 +9,8 @@ foo*
 /.lesshst
 /.ssh/
 
+/vpnkeys/
+/public*/
 /.kredinit*
 /foo.*
 
