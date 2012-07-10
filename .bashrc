@@ -65,7 +65,7 @@ else
     PS1="\h\$ "
 fi
 
-which emacs-snapshot > /dev/null && EMACS=emacs-snapshot || EMACS=emacs
+which emacs-snapshot > /dev/null 2>&1 && EMACS=emacs-snapshot || EMACS=emacs
 
 dir()  { ls --color=$lscols -lF "$@";}
 dirt() { dir -rt "$@";}
