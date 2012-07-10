@@ -8,10 +8,12 @@ foo*
 /.emacs.d/
 /.lesshst
 /.ssh/
+/.yaws/
 
 /vpnkeys/
 /public*/
 /.kredinit*
+/kredlive*
 /foo.*
 
 # erlang droppings
