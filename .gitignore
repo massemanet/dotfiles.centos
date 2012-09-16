@@ -3,6 +3,7 @@ foo*
 *~
 
 *.beam
+/.aptitude/
 /.bash_history
 /.cache/
 /.emacs.d/
