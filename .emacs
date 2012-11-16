@@ -85,7 +85,8 @@
 (defun my-erlang-setup ()
 
   (setq safe-local-variable-values
-        (quote ((erlang-indent-level . 4)
+        (quote ((allout-layout . t) 
+                (erlang-indent-level . 4)
                 (erlang-indent-level . 2))))
 
   (defvar erlang-erl-path "/usr")
@@ -347,9 +348,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:background "#000"))))
  '(magit-diff-add ((t (:foreground "green"))))
  '(magit-diff-del ((t (:foreground "red"))))
- '(magit-item-highlight ((t (:background "color-239")))))
+ '(magit-item-highlight ((t (:background "color-234")))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
