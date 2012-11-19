@@ -291,7 +291,7 @@
 (defun my-text-mode-hook ()
   (setq fill-column 79)
   (longlines-mode t)
-  (highlight-parentheses-mode -1)
+  (if (locate-library "highlight-parentheses")(highlight-parentheses-mode -1))
   (setq flyspell-dictionaries (quote ("american" "svenska")))
   (flyspell-mode))
 
