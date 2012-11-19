@@ -2,7 +2,7 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
 # if the machine has /home/$USER, I want that to be $HOME, not some afs disk
-[ -d /home/$USER ] && export HOME=/home/$USER
+# [ -d /home/$USER ] && export HOME=/home/$USER
 
 # one path to rule them all
 export PATH=/opt/bin:$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
@@ -52,7 +52,7 @@ if [ "$TERM" != "dumb" ]; then
 # set a fancy prompt
     export GIT_PS1_SHOWSTASHSTATE=true
     export GIT_PS1_SHOWUNTRACKEDFILES=true
-    unset GIT_PS1_SHOWDIRTYSTATE
+    export GIT_PS1_SHOWDIRTYSTATE=true
     PROMPT_COMMAND='if [ $? -ne 0 ]; then ERROR_FLAG=1; else ERROR_FLAG=""; fi'
 
     if [ "$USER" == "root" ];then
