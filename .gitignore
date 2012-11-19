@@ -2,15 +2,16 @@
 foo*
 *~
 
-*.beam
+/.Xauthority
 /.aptitude/
 /.bash_history
 /.cache/
+/.config/
 /.emacs.d/
 /.lesshst
 /.ssh/
-/.yaws/
 
+/.yaws/
 /vpnkeys/
 /public*/
 /.kredinit*
@@ -20,6 +21,9 @@ foo*
 # erlang droppings
 erl_crash.dump
 .erlang.cookie
+*.beam
+*.etz
+*.trz
 
 # git projects
 /git/
