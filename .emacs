@@ -349,6 +349,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:background "#000"))))
+ '(ediff-current-diff-A ((t (:background "color-23"))))
+ '(ediff-current-diff-B ((t (:background "color-52"))))
  '(magit-diff-add ((t (:foreground "green"))))
  '(magit-diff-del ((t (:foreground "red"))))
  '(magit-item-highlight ((t (:background "color-234")))))
