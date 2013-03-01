@@ -331,7 +331,7 @@
 (defun my-elpa ()
   (interactive)
   (package-refresh-contents)
-  (dolist (p '(magit highlight-parentheses clojure-mode js2-mode slime))
+  (dolist (p '(magit highlight-parentheses js2-mode))
     (progn
       (if (package-installed-p p)
           (message "already installed %s" p)
