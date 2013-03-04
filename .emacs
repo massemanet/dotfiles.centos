@@ -85,7 +85,7 @@
 (defun my-erlang-setup ()
 
   (setq safe-local-variable-values
-        (quote ((allout-layout . t) 
+        (quote ((allout-layout . t)
                 (erlang-indent-level . 4)
                 (erlang-indent-level . 2))))
 
@@ -220,13 +220,19 @@
 
 (defun my-js-setup()
   (autoload 'js2-mode "js2" nil t)
-  (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-  (setq js2-mirror-mode nil)
-  (setq js2-basic-offset 2))
+  (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
+
+(add-hook 'js2-mode-hook 'my-js2-mode-hook)
+(defun my-js2-mode-hook ()
+  (setq js2-mirror-mode nil
+        js2-bounce-indent-p t
+        js2-cleanup-whitespace t
+        js2-mode-indent-ignore-first-tab t
+        js2-basic-offset 2))
 
 (defun my-whitespace-setup()
   (require 'whitespace)
-  (setq whitespace-style (list 'tabs 'trailing 'lines-tail)
+  (setq whitespace-style (list 'face 'tabs 'trailing 'lines-tail)
         whitespace-line-column 79)
   (global-whitespace-mode t))
 
@@ -238,6 +244,12 @@
 (defun my-svn-setup ()
   (require 'psvn)
   (setq svn-status-custom-hide-function 'my-svn-status-hide))
+
+(if (locate-library "sml-modeline")
+    (progn
+      (require 'sml-modeline)
+      (sml-modeline-mode t)
+      (setq sml-modeline-numbers 'line-numbers)))
 
 (if (locate-library "fdlcap")
     (require 'fdlcap))
@@ -331,7 +343,7 @@
 (defun my-elpa ()
   (interactive)
   (package-refresh-contents)
-  (dolist (p '(magit highlight-parentheses js2-mode))
+  (dolist (p '(magit highlight-parentheses sml-modeline js2-mode ))
     (progn
       (if (package-installed-p p)
           (message "already installed %s" p)
@@ -353,11 +365,15 @@
  '(ediff-current-diff-B ((t (:background "color-52"))))
  '(magit-diff-add ((t (:foreground "green"))))
  '(magit-diff-del ((t (:foreground "red"))))
- '(magit-item-highlight ((t (:background "color-234")))))
+ '(magit-item-highlight ((t (:background "color-239"))))
+ '(sml-modeline-end-face ((t (:inherit match :foreground "black"))))
+ '(sml-modeline-vis-face ((t (:inherit region :foreground "black")))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(safe-local-variable-values (quote ((allout-layout . t)
+                                      (erlang-indent-level . 4)
+                                      (erlang-indent-level . 2)))))
