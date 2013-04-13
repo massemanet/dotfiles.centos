@@ -1,0 +1,40 @@
+wget http://ftp.df.lth.se/pub/fedora-epel/6/i386/epel-release-6-8.noarch.rpm
+sudo yum install epel-release-6-8.noarch.rpm
+sudo yum upgrade
+
+sudo yum install git bash-completion tmux automake16 autoconf213
+sudo yum install redhat-rpm-config rpm-build man yum-utils nano sudo
+
+sudo yum install erlang-ssh erlang-parsetools erlang-dialyzer erlang-eunit
+sudo yum install erlang-sasl erlang-erl_interface erlang-edoc cracklib-devel
+
+PATH=/usr/local/bin:$PATH
+wget ftp://ftp.gnu.org/gnu/autoconf/autoconf-2.68.tar.bz2
+tar -xjf ~/autoconf-2.68.tar.bz2
+cd autoconf-2.68/
+./configure; make; sudo make install
+
+FEDORA=http://download.fedoraproject.org/pub/fedora/linux/updates
+wget $FEDORA/17/SRPMS/emacs-24.1-7.fc17.src.rpm
+mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
+rpm --nomd5 -i emacs-24.1-7.fc17.src.rpm
+cd rpmbuild/SPECS/
+egrep "^BuildRequire" emacs.spec | cut -f2- -d":"| tr "," " " > foo
+cat foo | xargs sudo yum -y install
+# remove the python3 builddep and the building of emacs.py from emacs.spec
+rpmbuild -ba emacs.spec
+cd ../RPMS/x86_64
+sudo yum install emacs-nox-24.1-7.el6.x86_64.rpm \
+  emacs-filesystem-24.1-7.el6.x86_64.rpm emacs-common-24.1-7.el6.x86_64.rpm
+
+# visudo to this;
+# %wheel  ALL=(ALL)       ALL
+
+sudo useradd masse
+sudo usermod -G wheel masse
+sudo passwd masse
+
+sudo mount -t iso9660 /dev/scd0 /mnt
+cd /mnt
+sudo ./VBoxLinuxAdditions.run
