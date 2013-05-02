@@ -12,7 +12,7 @@
 [alias]
   co = checkout
   st = status
-  lol   = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  lol   = log --graph --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset -%C(yellow)%d%Creset' --abbrev-commit --date=relative
   in    = log HEAD..origin/master
   out   = log origin/master..HEAD
   unstage = reset HEAD --
