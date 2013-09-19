@@ -3,6 +3,8 @@
 #   mount netinst.iso
 #   boot && install
 #   mount "Guest Additions"
+
+# as root
 wget -q -O - http://emacs.naquadah.org/key.gpg | sudo apt-key add -
 echo "deb http://emacs.naquadah.org/ unstable/" >> /etc/apt/sources.list
 aptitude install module-assistant build-essential xserver-xorg xserver-xorg-dev
@@ -13,5 +15,8 @@ usermod masse -G sudo
 
 m-a prepare
 mount /media/cdrom
-sh /media/cdrom/VBoxLinuxAdditions.run 
+sh /media/cdrom/VBoxLinuxAdditions.run
 
+# as a user
+# copy a private key to ~/.ssh/id_rsa
+chmod 600 ~/.ssh/id_rsa
