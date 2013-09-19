@@ -25,21 +25,16 @@ shopt -s checkwinsize
 
 # find the basename of the dir that contains the current .git
 mygitdir () {
-    local g;
-    g="`__gitdir`";
-    if [ "$g" == "" ]; then
-        g="";
-    else
-        if [ "$g" == ".git" ]; then
-            g="`pwd`";
-        else
-            g=`dirname "$g"`;
-        fi;
-    fi;
-    if [ "$g" == "`echo ~`" ]; then
+    local D;
+    D=`git rev-parse --git-dir 2> /dev/null`
+    [ "$D" == ".git" ] && D="$PWD/$D"
+    D=`dirname "$D"`
+    if [ "$D" == "." ]; then
+        echo "";
+    elif [ "$D" == ~ ]; then
         echo "~";
     else
-        basename "$g";
+        basename "$D"
     fi
 }
 
