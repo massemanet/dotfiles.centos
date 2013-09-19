@@ -1,0 +1,17 @@
+# in VirtualBox;
+#   set up port forwarding 2202->22
+#   mount netinst.iso
+#   boot && install
+#   mount "Guest Additions"
+wget -q -O - http://emacs.naquadah.org/key.gpg | sudo apt-key add -
+echo "deb http://emacs.naquadah.org/ unstable/" >> /etc/apt/sources.list
+aptitude install module-assistant build-essential xserver-xorg xserver-xorg-dev
+aptitude install openssh-server sudo tmux git emacs-snapshot-nox deborphan
+aptitude update
+aptitude upgrade
+usermod masse -G sudo
+
+m-a prepare
+mount /media/cdrom
+sh /media/cdrom/VBoxLinuxAdditions.run 
+
