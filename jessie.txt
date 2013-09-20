@@ -11,7 +11,10 @@ aptitude install module-assistant build-essential xserver-xorg xserver-xorg-dev
 aptitude install openssh-server sudo tmux git emacs-snapshot-nox deborphan
 aptitude update
 aptitude upgrade
-usermod masse -G sudo
+usermod <user> -G sudo
+
+# passwordless sudo? do this;
+# "%sudo   ALL=(ALL:ALL) NOPASSWD: ALL"
 
 m-a prepare
 mount /media/cdrom
