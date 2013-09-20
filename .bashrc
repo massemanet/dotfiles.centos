@@ -4,6 +4,11 @@
 # if the machine has /home/$USER, I want that to be $HOME, not some afs disk
 # [ -d /home/$USER ] && export HOME=/home/$USER
 
+if [ -n "$SUDO_USER" -a -n "$DISPLAY" ]; then
+    DZ=`echo $DISPLAY | cut -f2 -d":" | cut -f1 -d"." | sed -e "s/^/:/"`
+    sudo -u "$SUDO_USER" xauth list | grep "$DZ" | xargs xauth add
+fi
+
 # one path to rule them all
 export PATH=/opt/bin:$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
 
