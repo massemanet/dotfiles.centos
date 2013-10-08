@@ -24,5 +24,3 @@
 [core]
 # global per user gitignore file
   excludesfile = "~/.gitignore_global"
-[push]
-	default = simple
