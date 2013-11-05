@@ -14,7 +14,7 @@ export LANG=en_US.utf8
 [ -z "$PS1" ] && return
 
 # check for GNU ls
-LS=ls ; [ `which gls` ] && LS=gls
+LS=ls ; [ `which gls 2> /dev/null` ] && LS=gls
 
 # Enable sane completion
 . /etc/bash_completion
@@ -26,8 +26,14 @@ which emacs-snapshot > /dev/null 2>&1 && EMACS=emacs-snapshot || EMACS=emacs
 fgrep() {
     [ -z "$1" ] && exit 1
     [ -n "$2" ] && d="$2" || d=".";
-    find "$d" -type f -exec grep -iH \""$1"\" {} \;
+    sudo find "$d" -type f -exec grep -iH "$1" {} \;
 }
+
+which() {
+    WS="--tty-only --read-alias --read-functions --show-tilde --show-dot"
+    (alias; declare -f) | /usr/bin/which $WS $@ 2> /dev/null
+}
+export -f which
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
