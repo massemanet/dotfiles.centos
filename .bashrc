@@ -105,3 +105,6 @@ PROMPT_COMMAND="$PROMPT_COMMAND;history -a"
 
 # multi-line commands
 shopt -s cmdhist
+
+# machine-local file outside git
+[ -f ~/.localbashrc ] && . ~/.localbashrc
