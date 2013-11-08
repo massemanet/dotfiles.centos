@@ -213,6 +213,7 @@
 
 (add-hook 'js2-mode-hook 'my-js2-mode-hook)
 (defun my-js2-mode-hook ()
+  (js2-leave-mirror-mode)
   (setq js2-mirror-mode nil
         js2-bounce-indent-p t
         js2-cleanup-whitespace t
@@ -291,10 +292,11 @@
 
 (add-hook 'text-mode-hook 'my-text-mode-hook)
 (defun my-text-mode-hook ()
-  (setq fill-column 79)
+  (setq fill-column 79
+        flyspell-dictionaries (quote ("american" "svenska")))
   (longlines-mode t)
-  (if (locate-library "highlight-parentheses")(highlight-parentheses-mode -1))
-  (setq flyspell-dictionaries (quote ("american" "svenska")))
+  (if (locate-library "highlight-parentheses")
+      (highlight-parentheses-mode -1))
   (flyspell-mode))
 
 (add-hook 'comint-mode-hook 'my-comint)
@@ -363,5 +365,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(fill-column 79)
  '(safe-local-variable-values (quote ((allout-layout . t) (erlang-indent-level . 4) (erlang-indent-level . 2)))))
