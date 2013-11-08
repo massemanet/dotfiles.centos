@@ -1,5 +1,15 @@
 ;; -*- mode: lisp -*-
 
+;; try to find and add my favourite paths
+  (let ((ps '("~/elisp/*.el"
+              "~/git/distel/elisp/*.el"
+              "/opt/*/lib/erlang/lib/tools-*/emacs/*.el"
+              "/usr/lib/erlang/lib/tools-*/emacs/*.el")))
+    (dolist (f0 (nreverse ps))
+      (let ((f (car (file-expand-wildcards f0))))
+        (when (and (stringp f) (file-exists-p f))
+          (add-to-list 'load-path (file-name-directory f))))))
+
 ; turn on good shit
 (set-language-environment "ASCII")
 (show-paren-mode t)
@@ -8,14 +18,19 @@
 (delete-selection-mode t)
 (column-number-mode t)
 (iswitchb-mode t)
+
+; turn off bad shit
+(if (featurep 'tool-bar)   (tool-bar-mode   -1))
+(if (featurep 'tabbar)     (tabbar-mode     -1))
+(if (featurep 'tooltip)    (tooltip-mode    -1))
+(if (featurep 'scroll-bar) (scroll-bar-mode -1))
+(if (featurep 'menu-bar)   (menu-bar-mode   -1))
+
 (if (fboundp 'custom-available-themes)
     (if (member 'tango-dark (custom-available-themes))
-        (load-theme 'tango-dark)
-      (if (fboundp 'color-theme-initialize)
-          (progn
-            (color-theme-initialize)
-            (color-theme-calm-forest)))))
+        (load-theme 'tango-dark)))
 
+; init package handler
 (if (locate-library "package")
     (progn
       (require 'package)
@@ -24,13 +39,6 @@
                    '("ELPA" . "http://tromey.com/elpa/"))
       (add-to-list 'package-archives
                    '("marmalade" . "http://marmalade-repo.org/packages/"))))
-
-; turn off bad shit
-(if (featurep 'tool-bar)   (tool-bar-mode   -1))
-(if (featurep 'tabbar)     (tabbar-mode     -1))
-(if (featurep 'tooltip)    (tooltip-mode    -1))
-(if (featurep 'scroll-bar) (scroll-bar-mode -1))
-(if (featurep 'menu-bar)   (menu-bar-mode   -1))
 
 (setq-default
  indent-tabs-mode         nil)
@@ -75,29 +83,12 @@
   (interactive)
   (recenter 1))
 
-(defun add-paths (ps)
-  (dolist (f (nreverse ps))
-  (when (and (stringp f) (file-exists-p f))
-    (add-to-list 'load-path f))))
-
-(add-paths (list "~/elisp"))
-
 (defun my-erlang-setup ()
 
   (setq safe-local-variable-values
         (quote ((allout-layout . t)
                 (erlang-indent-level . 4)
                 (erlang-indent-level . 2))))
-
-  (defvar erlang-erl-path "/usr")
-  (defvar erlang-distel-path "~/git/distel")
-  (defvar erlang-erlmode-path "~/elisp")
-
-  (add-paths (list
-              (car (file-expand-wildcards erlang-erlmode-path))
-              (car (file-expand-wildcards
-                    (concat erlang-erl-path "/lib/erlang/lib/tools-*/emacs")))
-              (concat erlang-distel-path "/elisp")))
 
   ;; use to start an erlang shell with boot flags
 
@@ -134,10 +125,8 @@
      erl-macro-face             'font-lock-preprocessor-face
      erl-record-face            'font-lock-preprocessor-face
 
-     ;; i need some space
-     erlang-indent-level 2
-     ;; find the man pages
-     setq erlang-root-dir erlang-erl-path))
+;;     setq erlang-root-dir erlang-erl-path))     ;; find the man pages
+     erlang-indent-level 2))
 
   (add-hook 'erlang-new-file-hook 'my-erlang-new-file-hook)
   (defun my-erlang-new-file-hook ()
