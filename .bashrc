@@ -29,12 +29,6 @@ fgrep() {
     sudo find "$d" -type f -exec grep -iH "$1" {} \;
 }
 
-which() {
-    WS="--tty-only --read-alias --read-functions --show-tilde --show-dot"
-    (alias; declare -f) | /usr/bin/which $WS $@ 2> /dev/null
-}
-export -f which
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
