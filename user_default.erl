@@ -8,17 +8,17 @@
 -author('Mats Cronqvist').
 -export([drm/0
          ,export_all/1
-	 ,tab/0
-	 ,long/1,flat/1,dump/1
-	 ,sig/1,sig/2
-	 ,e/2
-	 ,kill/1
-	 ,pi/1,pi/2
-	 ,os/1
-	 ,bt/1
-	 ,pid/1
-	 ,lm/0
-	 ,redbug/0,redbug/3]).
+         ,tab/0
+         ,long/1,flat/1,dump/1
+         ,sig/1,sig/2
+         ,e/2
+         ,kill/1
+         ,pi/1,pi/2
+         ,os/1
+         ,bt/1
+         ,pid/1
+         ,lm/0
+         ,redbug/0,redbug/3]).
 
 %% recompiles M with export_all without access to the source.
 export_all(M) ->
@@ -36,12 +36,12 @@ lm() ->
     Tm = fun(M) -> T(M:module_info(compile)) end,
     Tf = fun(F) -> {ok,{_,[{_,I}]}}=beam_lib:chunks(F,[compile_info]),T(I) end,
     Load = fun(M) -> c:l(M),M end,
-    
+
     [Load(M) || {M,F} <- code:all_loaded(), is_beamfile(F), Tm(M)<Tf(F)].
 
-is_beamfile(F) -> 
+is_beamfile(F) ->
     ok == element(1,file:read_file_info(F)) andalso
-	".beam" == filename:extension(F).
+        ".beam" == filename:extension(F).
 
 tab() ->
   N=node(),
@@ -53,9 +53,9 @@ sig(M) -> sig(M,'').
 sig(M,F) when is_atom(M),is_atom(F) -> otp_doc:sig(M,F).
 
 dump(Term)->
-  {ok,FD}=file:open(filename:join([os:getenv("HOME"),erlang.dump]),[write]),
+  {ok,FD}=file:open(filename:join([os:getenv("HOME"),"erlang.dump"]),[write]),
   try wr(FD,"~p.~n",Term)
-  after file:close(FD) 
+  after file:close(FD)
   end.
 
 flat(L) -> wr("~s~n",lists:flatten(L)).
