@@ -7,6 +7,7 @@ wget http://packages.erlang-solutions.com/debian/erlang_solutions.asc
 apt-key add erlang_solutions.asc
 wget -q -O - http://emacs.naquadah.org/key.gpg | sudo apt-key add -
 echo "deb http://emacs.naquadah.org/ oldstable/" >> /etc/apt/sources.list
-aptitude install bash-completion openssh-server sudo tmux git emacs-snapshot-nox deborphan
+aptitude install bash-completion openssh-server sudo tmux git
+aptitude install automake autoconf aclocal make emacs-snapshot-nox deborphan
 adduser <user>
 usermod <user> -G sudo
