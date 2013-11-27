@@ -38,13 +38,13 @@ shopt -s checkwinsize
 
 # fake __git_ps1
 function mygitps1() {
-for b in `git log --pretty=format:d' | head -1 | tr "(,)" " "`
-do echo $b | awk '
+    for b in `git log --pretty=format:d' | head -1 | tr "(,)" " "`
+    do echo $b | awk '
 /HEAD/{next}
 /origin\//{next}
 /tag:/{next}
 {print $1}'
-done | head -1
+    done | head -1
 }
 
 # find the basename of the dir that contains the current .git
