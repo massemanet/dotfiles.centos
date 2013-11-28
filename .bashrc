@@ -115,4 +115,4 @@ PROMPT_COMMAND="$PROMPT_COMMAND;history -a"
 shopt -s cmdhist
 
 # machine-local file outside git
-[ -f ~/.localbashrc ] && . ~/.localbashrc
+[ -f ~/.localbashrc ] && . ~/.localbashrc || uname -a
