@@ -9,6 +9,7 @@ foo*
 /.bash_history
 /.cache/
 /.config/
+/.ddd/
 /.emacs.d/
 /.lesshst
 /.ssh/
