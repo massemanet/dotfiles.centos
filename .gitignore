@@ -11,6 +11,7 @@ foo*
 /.config/
 /.ddd/
 /.emacs.d/
+/.gnupg/
 /.lesshst
 /.ssh/
 
