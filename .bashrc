@@ -41,9 +41,9 @@ shopt -s checkwinsize
 function mygitps1() {
     for b in `git log --pretty=format:d' | head -1 | tr "(,)" " "`
     do echo $b | awk '
-/HEAD/{next}
-/origin\//{next}
-/tag:/{next}
+/HEAD/     {next}
+/origin\// {next}
+/tag:/     {next}
 {print $1}'
     done | head -1
 }
