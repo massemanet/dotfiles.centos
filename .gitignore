@@ -14,14 +14,8 @@ foo*
 /.gnupg/
 /.lesshst
 /.ssh/
-
-/.yaws/
-/vpnkeys/
-/public*/
-/.post-review-cookies.txt
-/.kredinit*
-/kredlive*
-/foo.*
+/.subversion/
+/foo*
 
 # erlang droppings
 erl_crash.dump
@@ -30,8 +24,9 @@ erl_crash.dump
 *.etz
 *.trz
 
-# git projects
+# git/subversion projects
 /git/
+/svn/
 
 # rpm build dir
 /rpm/

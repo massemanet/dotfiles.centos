@@ -29,7 +29,10 @@ fgrep() {
     [ -z "$1" ] && exit 1
     [ -n "$2" ] && d="$2" || d="."
     [ -n "$3" ] && n="-name $3"
-    sudo find "$d" -type f $n -exec grep -iH "$1" {} \;
+    find "$d" -path "*/.svn" -prune -o \
+              -path "*/.git" -prune -o \
+              -path "*/.deps" -prune -o \
+              -type f $n -exec grep -iH "$1" {} \;
     set +f
 }
 
