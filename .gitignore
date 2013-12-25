@@ -30,3 +30,6 @@ erl_crash.dump
 
 # rpm build dir
 /rpm/
+
+# historic
+*kred*
