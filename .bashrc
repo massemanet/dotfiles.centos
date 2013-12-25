@@ -1,5 +1,6 @@
 # -*- mode: shell-script -*-
 # ~/.bashrc: executed by bash(1) for non-login shells.
+# centos/debian style
 
 # one path to rule them all
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
