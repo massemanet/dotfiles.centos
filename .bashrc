@@ -25,7 +25,7 @@ LS=ls ; [ `which gls 2> /dev/null` ] && LS=gls
 which emacs-snapshot > /dev/null 2>&1 && EMACS=emacs-snapshot || EMACS=emacs
 
 # find-grep
-fgrep() {
+function fgrep() {
     set -f
     [ -z "$1" ] && exit 1
     [ -n "$2" ] && d="$2" || d="."
@@ -43,17 +43,18 @@ shopt -s checkwinsize
 
 # fake __git_ps1
 function mygitps1() {
-    for b in `git log --pretty=format:d' | head -1 | tr "(,)" " "`
+    for b in `git log --format='%d' | head -1 | tr "(,)" " "`
     do echo $b | awk '
-/HEAD/     {next}
-/origin\// {next}
-/tag:/     {next}
-{print $1}'
+/HEAD/       {next}
+/origin\//   {next}
+/upstream\// {next}
+/tag:/       {next}
+             {print $1}'
     done | head -1
 }
 
 # find the basename of the dir that contains the current .git
-mygitdir () {
+function mygitdir () {
     local D;
     D=`git rev-parse --git-dir 2> /dev/null`
     [ "$D" == ".git" ] && D="$PWD/$D"
