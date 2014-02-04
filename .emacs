@@ -351,11 +351,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:background "#000"))))
- '(ediff-current-diff-A ((t (:background "color-23"))) t)
- '(ediff-current-diff-B ((t (:background "color-52"))) t)
+ '(ediff-current-diff-A ((t (:background "color-23"))))
+ '(ediff-current-diff-B ((t (:background "color-52"))))
  '(magit-diff-add ((t (:foreground "green"))))
  '(magit-diff-del ((t (:foreground "color-169"))))
- '(magit-item-highlight ((t (:background "color-237"))))
+ '(magit-item-highlight ((t (:background "color-234"))))
  '(sml-modeline-end-face ((t (:inherit match :foreground "black"))))
  '(sml-modeline-vis-face ((t (:inherit region :foreground "black")))))
 
