@@ -103,7 +103,7 @@
     (interactive)
     (insert "%% -*- mode: erlang; erlang-indent-level: 2 -*-\n")
     (insert (concat "%%% Created : " (erlang-skel-dd-mmm-yyyy) " by "
-                    (user-full-name) " <" erlang-skel-mail-address ">\n\n"))
+                    (user-full-name) " <" user-mail-address ">\n\n"))
     (insert "%% @doc\n")
     (insert "%% @end\n\n")
     (insert (concat "-module('" (erlang-get-module-from-file-name) "').\n"))
