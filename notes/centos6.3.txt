@@ -1,7 +1,7 @@
 su -c 'rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm'
 sudo yum upgrade
 
-sudo yum install git bash-completion tmux automake16 autoconf213
+sudo yum install git bash-completion tmux automake16 autoconf213 gcc-c++
 sudo yum install redhat-rpm-config rpm-build man yum-utils nano sudo
 
 sudo yum install erlang-ssh erlang-parsetools erlang-dialyzer erlang-eunit
