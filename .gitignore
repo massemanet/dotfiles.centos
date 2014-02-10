@@ -29,7 +29,7 @@ erl_crash.dump
 /svn/
 
 # rpm build dir
-/rpm/
+/rpm*/
 
 # historic
 *kred*
