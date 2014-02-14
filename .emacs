@@ -292,6 +292,8 @@
 
 (add-hook 'text-mode-hook 'my-text-mode-hook)
 (defun my-text-mode-hook ()
+  (setq ispell-program-name "hunspell")
+  (require 'rw-hunspell)
   (setq fill-column 79
         flyspell-dictionaries (quote ("american" "svenska")))
   (if (locate-library "highlight-parentheses")
@@ -333,7 +335,7 @@
 (defun my-elpa ()
   (interactive)
   (package-refresh-contents)
-  (dolist (p '(magit highlight-parentheses sml-modeline js2-mode ))
+  (dolist (p '(magit highlight-parentheses sml-modeline js2-mode hunspell-rw))
     (progn
       (if (package-installed-p p)
           (message "already installed %s" p)
