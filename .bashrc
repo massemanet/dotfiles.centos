@@ -74,7 +74,7 @@ if [ "$TERM" != "dumb" ]; then
     export GREP_OPTIONS='--color=auto'
     # enable color support of ls
     lscols=auto
-    eval "`dircolors -b $HOME/.dircolors`"
+    [ -f $HOME/.dircolors ] && eval "`dircolors -b $HOME/.dircolors`"
     # to get emacs -nw to use 256 colors
     export TERM=xterm-256color
     # set a fancy prompt
