@@ -17,12 +17,16 @@ export LANG=en_US.utf8
 
 # check for GNU ls
 LS=ls ; [ `which gls 2> /dev/null` ] && LS=gls
+DIRCOLS=dircolors ; [ `which gdircolors 2> /dev/null` ] && DIRCOLS=gdircolors
 
 # Enable sane completion
 . /etc/bash_completion
 
 # emacs
-which emacs-snapshot > /dev/null 2>&1 && EMACS=emacs-snapshot || EMACS=emacs
+EMACS=emacs ; which emacs-snapshot > /dev/null 2>&1 && EMACS=emacs-snapshot
+
+# prompt
+GITPROMPT=/usr/share/git-core/contrib/completion/git-prompt.sh
 
 # find-grep
 function fgrep() {
@@ -32,7 +36,9 @@ function fgrep() {
     [ -n "$3" ] && n="-name $3"
     find "$d" -path "*/.svn" -prune -o \
               -path "*/.git" -prune -o \
+              -path "*/.eunit" -prune -o \
               -path "*/.deps" -prune -o \
+              -path "*/deps" -prune -o \
               -type f $n -exec grep -iIH "$1" {} \;
     set +f
 }
@@ -44,8 +50,8 @@ shopt -s checkwinsize
 function mygitps1() {
     if type __git_ps1 &> /dev/null ; then
         __git_ps1 "%s";
-    elif [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]]; then
-        . /usr/share/git-core/contrib/completion/git-prompt.sh
+    elif [[ -f $GITPROMPT ]]; then
+        . $GITPROMPT
         __git_ps1 "%s";
     else
         for b in `git log --format='%d' 2> /dev/null | head -1 | tr "(,)" " "`
@@ -80,7 +86,7 @@ if [ "$TERM" != "dumb" ]; then
     export GREP_OPTIONS='--color=auto'
     # enable color support of ls
     lscols=auto
-    [ -f $HOME/.dircolors ] && eval "`dircolors -b $HOME/.dircolors`"
+    [ -f $HOME/.dircolors ] && eval "`$DIRCOLS -b $HOME/.dircolors`"
     # to get emacs -nw to use 256 colors
     export TERM=xterm-256color
     # set a fancy prompt
