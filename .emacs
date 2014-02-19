@@ -4,6 +4,7 @@
   (let ((ps (list "~/elisp/*.el"
                   "~/git/distel/elisp/*.el"
                   "/opt/*/lib/erlang/lib/tools-*/emacs/*.el"
+                  "/opt/*/lib64/erlang/lib/tools-*/emacs/*.el"
                   "/usr/lib/erlang/lib/tools-*/emacs/*.el")))
     (dolist (f0 (nreverse ps))
       (let ((f (car (file-expand-wildcards f0))))
