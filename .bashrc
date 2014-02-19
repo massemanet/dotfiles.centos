@@ -43,7 +43,7 @@ shopt -s checkwinsize
 
 # fake __git_ps1
 function mygitps1() {
-    for b in `git log --format='%d' | head -1 | tr "(,)" " "`
+    for b in `git log --format='%d' 2> /dev/null | head -1 | tr "(,)" " "`
     do echo $b | awk '
 /HEAD/       {next}
 /origin\//   {next}
