@@ -41,9 +41,11 @@ function fgrep() {
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# fake __git_ps1
 function mygitps1() {
-    if type __git_ps1 > /dev/null 2>&1 ; then
+    if type __git_ps1 &> /dev/null ; then
+        __git_ps1 "%s";
+    elif [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]]; then
+        . /usr/share/git-core/contrib/completion/git-prompt.sh
         __git_ps1 "%s";
     else
         for b in `git log --format='%d' 2> /dev/null | head -1 | tr "(,)" " "`
