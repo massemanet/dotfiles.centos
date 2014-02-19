@@ -43,14 +43,18 @@ shopt -s checkwinsize
 
 # fake __git_ps1
 function mygitps1() {
-    for b in `git log --format='%d' 2> /dev/null | head -1 | tr "(,)" " "`
-    do echo $b | awk '
+    if type __git_ps1 > /dev/null 2>&1 ; then
+        __git_ps1 "%s";
+    else
+        for b in `git log --format='%d' 2> /dev/null | head -1 | tr "(,)" " "`
+        do echo $b | awk '
 /HEAD/       {next}
 /origin\//   {next}
 /upstream\// {next}
 /tag:/       {next}
              {print $1}'
-    done | head -1
+        done | head -1
+    fi
 }
 
 # find the basename of the dir that contains the current .git
@@ -83,9 +87,9 @@ if [ "$TERM" != "dumb" ]; then
     export GIT_PS1_SHOWDIRTYSTATE=true
 
     if [ "$USER" == "root" ];then
-        PS1='\[$(tput setaf 5)\]\h\[$(tput setaf 3)\]($(mygitdir):$(__git_ps1 "%s"))\[$(tput setaf 2)\]${ERROR_FLAG:+\[$(tput setaf 1)\]}#\[$(tput sgr0)\] '
+        PS1='\[$(tput setaf 5)\]\h\[$(tput setaf 3)\]($(mygitdir):$(mygitps1))\[$(tput setaf 2)\]${ERROR_FLAG:+\[$(tput setaf 1)\]}#\[$(tput sgr0)\] '
     else
-        PS1='\[$(tput setaf 3)\]\h\[$(tput setaf 5)\]($(mygitdir):$(__git_ps1 "%s"))\[$(tput setaf 2)\]${ERROR_FLAG:+\[$(tput setaf 1)\]}\$\[$(tput sgr0)\] '
+        PS1='\[$(tput setaf 3)\]\h\[$(tput setaf 5)\]($(mygitdir):$(mygitps1))\[$(tput setaf 2)\]${ERROR_FLAG:+\[$(tput setaf 1)\]}\$\[$(tput sgr0)\] '
     fi
 else
     lscols=none
