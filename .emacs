@@ -336,7 +336,7 @@
 (defun my-elpa ()
   (interactive)
   (package-refresh-contents)
-  (dolist (p '(magit highlight-parentheses sml-modeline js2-mode hunspell-rw))
+  (dolist (p '(magit highlight-parentheses sml-modeline js2-mode rw-hunspell))
     (progn
       (if (package-installed-p p)
           (message "already installed %s" p)
