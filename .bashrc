@@ -30,6 +30,7 @@ GITPROMPT=/usr/share/git-core/contrib/completion/git-prompt.sh
 
 # find-grep
 function fgrep() {
+    local d n
     set -f
     [ -z "$1" ] && exit 1
     [ -n "$2" ] && d="$2" || d="."
