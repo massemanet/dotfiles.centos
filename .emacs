@@ -200,13 +200,13 @@
     (unless (null buffer-file-name)
       (make-local-variable 'compile-command)
       (setq compile-command
-            (if (file-exists-p "Makefile")
-                "make -k"
-              (concat
-               "erlc "
-               (if (file-exists-p "../ebin") "-o ../ebin " "")
-               (if (file-exists-p "../inc") "-I ../inc " "")
-               "+debug_info -W " buffer-file-name))))))
+            (cond ((file-exists-p "Makefile")  "make -k")
+                  ((file-exists-p "../Makefile")  "make -kC..")
+                  (t (concat
+                      "erlc "
+                      (if (file-exists-p "../ebin") "-o ../ebin " "")
+                      (if (file-exists-p "../include") "-I ../include " "")
+                      "+debug_info -W " buffer-file-name))))))
 
 (defun my-js-setup()
   (autoload 'js2-mode "js2" nil t)
