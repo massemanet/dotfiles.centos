@@ -20,6 +20,7 @@ foo*
 # erlang droppings
 erl_crash.dump
 .erlang.cookie
+*dialyzer_plt
 *.beam
 *.etz
 *.trz
