@@ -40,6 +40,7 @@ function fgrep() {
               -path "*/.eunit" -prune -o \
               -path "*/.deps" -prune -o \
               -path "*/deps" -prune -o \
+              -path "*~" -prune -o \
               -type f $n -exec grep -iIH "$1" {} \;
     set +f
 }

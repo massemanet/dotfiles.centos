@@ -213,7 +213,6 @@
 
 (add-hook 'js2-mode-hook 'my-js2-mode-hook)
 (defun my-js2-mode-hook ()
-  (js2-leave-mirror-mode)
   (setq js2-mirror-mode nil
         js2-bounce-indent-p t
         js2-cleanup-whitespace t
