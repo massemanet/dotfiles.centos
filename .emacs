@@ -1,17 +1,17 @@
 ;; -*- mode: lisp -*-
 
 ;; try to find and add my favourite paths
-  (let ((ps (list "~/elisp/*.el"
-                  "~/git/distel/elisp/*.el"
-                  "/opt/*/lib/erlang/lib/tools-*/emacs/*.el"
-                  "/opt/*/lib64/erlang/lib/tools-*/emacs/*.el"
-                  "/usr/lib/erlang/lib/tools-*/emacs/*.el")))
-    (dolist (f0 (nreverse ps))
-      (let ((f (car (file-expand-wildcards f0))))
-        (when (and (stringp f) (file-exists-p f))
-          (add-to-list 'load-path (file-name-directory f))))))
+(let ((ps (list "~/elisp/*.el"
+                "~/git/distel/elisp/*.el"
+                "/opt/*/lib/erlang/lib/tools-*/emacs/*.el"
+                "/opt/*/lib64/erlang/lib/tools-*/emacs/*.el"
+                "/usr/lib/erlang/lib/tools-*/emacs/*.el")))
+  (dolist (f0 (nreverse ps))
+    (let ((f (car (file-expand-wildcards f0))))
+      (when (and (stringp f) (file-exists-p f))
+        (add-to-list 'load-path (file-name-directory f))))))
 
-; turn on good shit
+;; turn on good shit
 (set-language-environment "ASCII")
 (show-paren-mode t)
 (transient-mark-mode t)
@@ -20,7 +20,7 @@
 (column-number-mode t)
 (iswitchb-mode t)
 
-; turn off bad shit
+;; turn off bad shit
 (if (featurep 'tool-bar)   (tool-bar-mode   -1))
 (if (featurep 'tabbar)     (tabbar-mode     -1))
 (if (featurep 'tooltip)    (tooltip-mode    -1))
@@ -31,7 +31,7 @@
     (if (member 'tango-dark (custom-available-themes))
         (load-theme 'tango-dark)))
 
-; init package handler
+;; init package handler
 (if (locate-library "package")
     (progn
       (require 'package)
@@ -114,7 +114,7 @@
   (add-hook 'erlang-load-hook 'my-erlang-load-hook)
   (defun my-erlang-load-hook ()
     (setq
-     ;; syntax haighlighting
+     ;; syntax highlighting
      erl-atom-face              'default         ;'font-lock-doc-face
      erl-quotes-face            'font-lock-doc-string-face
      erl-list-operator-face     'font-lock-warning-face
@@ -126,7 +126,6 @@
      erl-macro-face             'font-lock-preprocessor-face
      erl-record-face            'font-lock-preprocessor-face
 
-;;     setq erlang-root-dir erlang-erl-path))     ;; find the man pages
      erlang-indent-level 2))
 
   (add-hook 'erlang-new-file-hook 'my-erlang-new-file-hook)
@@ -175,7 +174,7 @@
 
           (defun klarna-paths (f base)
             (if (string= (file-name-nondirectory (updir 3 f)) "lib")
-              (file-expand-wildcards (concat (updir 4 f) "/test/shared/" base))))
+                (file-expand-wildcards (concat (updir 4 f) "/test/shared/" base))))
 
           (defun erlang-flymake-next-error ()
             "Goto next error, if any. Display error in mini-buffer."
@@ -206,7 +205,7 @@
                       "erlc "
                       (if (file-exists-p "../ebin") "-o ../ebin " "")
                       (if (file-exists-p "../include") "-I ../include " "")
-                      "+debug_info -W " buffer-file-name))))))
+                      "+debug_info -W " buffer-file-name)))))))
 
 (defun my-js-setup()
   (autoload 'js2-mode "js2" nil t)
