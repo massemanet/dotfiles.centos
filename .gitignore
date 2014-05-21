@@ -24,6 +24,7 @@ erl_crash.dump
 *.beam
 *.etz
 *.trz
+.rebar/
 
 # git/subversion projects
 /git/
