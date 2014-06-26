@@ -41,7 +41,7 @@ function fgrep() {
               -path "*/.deps" -prune -o \
               -path "*/deps" -prune -o \
               -path "*~" -prune -o \
-              -type f $n -exec grep -iIH "$1" {} \;
+              -type f $n -exec grep -inIH "$1" {} \;
     set +f
 }
 
