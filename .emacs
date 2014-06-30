@@ -11,7 +11,7 @@
       (when (and (stringp f) (file-exists-p f))
         (add-to-list 'load-path (file-name-directory f))))))
 
-;; turn on good shit
+; turn on good shit
 (set-language-environment "ASCII")
 (show-paren-mode t)
 (transient-mark-mode t)
@@ -20,7 +20,7 @@
 (column-number-mode t)
 (iswitchb-mode t)
 
-;; turn off bad shit
+; turn off bad shit
 (if (featurep 'tool-bar)   (tool-bar-mode   -1))
 (if (featurep 'tabbar)     (tabbar-mode     -1))
 (if (featurep 'tooltip)    (tooltip-mode    -1))
@@ -31,7 +31,7 @@
     (if (member 'tango-dark (custom-available-themes))
         (load-theme 'tango-dark)))
 
-;; init package handler
+; init package handler
 (if (locate-library "package")
     (progn
       (require 'package)
@@ -56,6 +56,15 @@
  utf-translate-cjk-mode   nil
  visible-bell             t)
 
+(defun flymake-next-error ()
+  "Goto next error, if any. Display error in mini-buffer."
+  (interactive)
+  (flymake-goto-next-error)
+  (let ((err (get-char-property (point) 'help-echo)))
+    (when err
+      (message err))))
+
+(global-set-key (kbd "M-'") 'flymake-next-error)
 (global-set-key (kbd "M-N") 'last-line)
 (global-set-key (kbd "M-P") 'first-line)
 (global-set-key (kbd "C-c a") 'align-regexp)
@@ -167,29 +176,30 @@
               (file-expand-wildcards (concat (updir 2 f) "/" base)))
              (t
               nil)))
+          (defun rebar-paths (f base)
+            (cond
+             ((string= (file-name-nondirectory (updir 1 f)) "src")
+              (file-expand-wildcards (concat (updir 2 f) "/deps/*/" base)))
+             (t
+              nil)))
+          (defun klarna-paths (f base)
+            (if (string= (file-name-nondirectory (updir 3 f)) "lib")
+              (file-expand-wildcards
+               (concat (updir 4 f) "/test/shared/" base))))
           (defun epaths(base)
             (interactive)
             (append (klarna-paths (buffer-file-name) base)
+                    (rebar-paths (buffer-file-name) base)
                     (erlc-paths (buffer-file-name) base)))
 
-          (defun klarna-paths (f base)
-            (if (string= (file-name-nondirectory (updir 3 f)) "lib")
-                (file-expand-wildcards (concat (updir 4 f) "/test/shared/" base))))
-
-          (defun erlang-flymake-next-error ()
-            "Goto next error, if any. Display error in mini-buffer."
-            (interactive)
-            (flymake-goto-next-error)
-            (let ((err (get-char-property (point) 'help-echo)))
-              (when err
-                (message err))))
           (setq flymake-no-changes-timeout 3)
           (load "erlang-flymake")
           (setq
-           erlang-flymake-get-code-path-dirs-function (lambda() (epaths "ebin"))
-           erlang-flymake-get-include-dirs-function (lambda() (epaths "include")))
-          (flymake-mode)
-          (local-set-key (kbd "M-'") 'erlang-flymake-next-error)))
+           erlang-flymake-get-code-path-dirs-function
+           (lambda() (epaths "ebin"))
+           erlang-flymake-get-include-dirs-function
+           (lambda() (epaths "include")))
+          (flymake-mode)))
     ;; stupid electricity
     (set-variable 'erlang-electric-commands nil)
     ;; stupid default
@@ -213,6 +223,11 @@
 
 (add-hook 'js2-mode-hook 'my-js2-mode-hook)
 (defun my-js2-mode-hook ()
+  (if (locate-library "flymake-jshint")
+      (progn
+        (require 'flymake-jshint)
+        (flymake-mode)))
+  (js2-leave-mirror-mode)
   (setq js2-mirror-mode nil
         js2-bounce-indent-p t
         js2-cleanup-whitespace t
@@ -334,8 +349,8 @@
 (defun my-elpa ()
   (interactive)
   (package-refresh-contents)
-  (dolist (p '(magit highlight-parentheses sml-modeline
-                     js2-mode rw-hunspell markdown-mode))
+  (dolist (p '(magit highlight-parentheses rw-hunspell markdown-mode
+                     sml-modeline js2-mode flymake-jshint))
     (progn
       (if (package-installed-p p)
           (message "already installed %s" p)
