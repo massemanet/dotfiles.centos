@@ -89,7 +89,7 @@ pid({0,I2,I3}) when is_integer(I2) -> c:pid(0,I2,I3);
 pid(I2) when is_integer(I2) -> pid({0,I2,0}).
 
 ineti() ->
-  io:fwrite("~15s:~-5s ~15s:~-5s ~7s ~9s ~s ~s~n",
+  io:fwrite("~15s:~-5s ~15s:~-5s ~7s ~9s ~s/~s~n",
             ["local","port","remote","port","type","status","sent","recvd"]),
   lists:foreach(fun ineti/1,ports()).
 
@@ -104,7 +104,7 @@ ineti(P) ->
       enotconn -> {"*","*"};
       {Rip,Rp} -> {inet_parse:ntoa(Rip),integer_to_list(Rp)}
     end,
-  io:fwrite("~15s:~-5w ~15s:~-5s ~7w ~9w ~w ~w~n",
+  io:fwrite("~15s:~-5w ~15s:~-5s ~7w ~9w ~w/~w~n",
             [inet_parse:ntoa(LIP),LPort,RIP,RPort,Type,Status,Sent,Recvd]).
 
 ports() ->
