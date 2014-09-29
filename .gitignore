@@ -7,15 +7,21 @@ foo*
 /.Xauthority
 /.aptitude/
 /.bash_history
+/.bash_logout
 /.cache/
 /.config/
+/.dbus/
 /.ddd/
 /.emacs.d/
+/.gconf/
 /.gnupg/
 /.lesshst
+/.local/
 /.ssh/
 /.subversion/
+/.xscreensaver
 /foo*
+/Downloads/
 
 # erlang droppings
 erl_crash.dump

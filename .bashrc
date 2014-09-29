@@ -10,7 +10,7 @@ export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
 unset  LC_ALL
 unset  LANGUAGE
 unset  LC_CTYPE
-export LANG=en_US.utf8
+export LANG=`locale -a | grep -i c.utf`
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
