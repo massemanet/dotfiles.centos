@@ -5,10 +5,8 @@
 #   mount "Guest Additions"
 
 # as root
-wget -q -O - http://emacs.naquadah.org/key.gpg | sudo apt-key add -
-echo "deb http://emacs.naquadah.org/ unstable/" >> /etc/apt/sources.list
 aptitude install module-assistant build-essential xserver-xorg xserver-xorg-dev
-aptitude install openssh-server sudo tmux git emacs-snapshot-nox deborphan
+aptitude install openssh-server sudo tmux git emacs-nox deborphan
 aptitude update
 aptitude upgrade
 usermod <user> -G sudo
@@ -20,6 +18,13 @@ m-a prepare
 mount /media/cdrom
 sh /media/cdrom/VBoxLinuxAdditions.run
 
+
+# using chromebook/crouton
+  sudo apt-get update
+  sudo apt-get install aptitude
+  sudo aptitude upgrade
+  sudo aptitude install automake make git emacs-nox tmux bash-completion g++
+  sudo aptitude install erlang-nox erlang-dev
 # as a user
 # copy a private key to ~/.ssh/id_rsa
-chmod 600 ~/.ssh/id_rsa
+ chmod 600 ~/.ssh/id_rsa
