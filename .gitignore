@@ -15,8 +15,11 @@ foo*
 /.emacs.d/
 /.gconf/
 /.gnupg/
+/.kde/
+/.lastpass/
 /.lesshst
 /.local/
+/.mozilla/
 /.ssh/
 /.subversion/
 /.xscreensaver
