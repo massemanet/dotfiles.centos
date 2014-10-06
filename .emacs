@@ -65,25 +65,25 @@
     (when err
       (message err))))
 
-(global-set-key (kbd "M-'") 'flymake-next-error)
-(global-set-key (kbd "M-N") 'last-line)
-(global-set-key (kbd "M-P") 'first-line)
-(global-set-key (kbd "C-c a") 'align-regexp)
-(global-set-key (kbd "C-c b") 'bury-buffer)
-(global-set-key (kbd "C-c p") 'point-to-register)
-(global-set-key (kbd "C-c r") 'register-to-point)
-(global-set-key (kbd "M--") `shrink-window)
-(global-set-key (kbd "M-+") `enlarge-window)
-(global-set-key (kbd "M-[") `previous-error)
-(global-set-key (kbd "M-]") `next-error)
-(global-set-key (kbd "M-d") 'backward-delete-char-untabify)
-(global-set-key (kbd "C-M-u") `fdlcap-change-case-current-word)
-(global-set-key (kbd "C-M-t") `transpose-lines)
-(global-set-key (kbd "C-M-v") `scroll-down)
-(global-set-key (kbd "C-M-c") `compile)
-(global-set-key (kbd "C-M-d") `kill-current-word)
-(global-set-key (kbd "C-z") 'undo) ; be like a mac
-(global-set-key (kbd "M-z") 'undo) ; if screen eats C-z
+(global-set-key (kbd "M-'")     'flymake-next-error)
+(global-set-key (kbd "M-N")     'last-line)
+(global-set-key (kbd "M-P")     'first-line)
+(global-set-key (kbd "C-c a")   'align-regexp)
+(global-set-key (kbd "C-c b")   'bury-buffer)
+(global-set-key (kbd "C-c p")   'point-to-register)
+(global-set-key (kbd "C-c r")   'register-to-point)
+(global-set-key (kbd "M--")     `shrink-window)
+(global-set-key (kbd "M-+")     `enlarge-window)
+(global-set-key (kbd "M-[")     `previous-error)
+(global-set-key (kbd "M-]")     `next-error)
+(global-set-key (kbd "M-d")     'backward-delete-char-untabify)
+(global-set-key (kbd "C-M-u")   `fdlcap-change-case-current-word)
+(global-set-key (kbd "C-M-t")   `transpose-lines)
+(global-set-key (kbd "C-M-v")   `scroll-down)
+(global-set-key (kbd "C-M-c")   `compile)
+(global-set-key (kbd "C-M-d")   `kill-current-word)
+(global-set-key (kbd "C-z")     'undo) ; be like a mac
+(global-set-key (kbd "M-z")     'undo) ; if screen eats C-z
 (global-set-key (kbd "C-x C-r") 'revert-buffer)
 
 (defun last-line ()
@@ -95,7 +95,6 @@
   (recenter 1))
 
 (defun my-erlang-setup ()
-
   (setq safe-local-variable-values
         (quote ((allout-layout . t)
                 (erlang-indent-level . 4)
@@ -241,11 +240,6 @@
         whitespace-line-column 79)
   (global-whitespace-mode t))
 
-(defun my-distel-setup ()
-  (require 'distel)
-  (distel-setup)
-  (setq erl-reload-dwim t))
-
 (defun my-svn-setup ()
   (require 'psvn)
   (setq svn-status-custom-hide-function 'my-svn-status-hide))
@@ -295,7 +289,10 @@
       (require 'erlang-start)
       (my-erlang-setup)
       (if (locate-library "distel")
-          (my-distel-setup))))
+          (progn
+            (require 'distel)
+            (distel-setup)
+            (setq erl-reload-dwim t)))))
 
 (defun my-svn-status-hide (line-info)
   "Hide externals."

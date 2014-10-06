@@ -6,6 +6,8 @@
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
 [ -d /opt/bin ] && export PATH=$PATH:/opt/bin
 
+set +f
+
 # one locale to rule them all
 unset  LC_ALL
 unset  LANGUAGE
@@ -48,6 +50,21 @@ function fgrep() {
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
+
+function gitstat() {
+    base=~/git
+    for d in $base/*
+    do
+        echo -n `basename $d`
+        echo -n " "
+        (
+            cd $d
+            echo -n `git st | grep -E "On branch|modified" | cut -f4 -d" "`
+            echo -n "  "
+            echo `2>/dev/null git describe --tags HEAD`
+        )
+    done | column -t
+}
 
 function mygitps1() {
     if type __git_ps1 &> /dev/null ; then
