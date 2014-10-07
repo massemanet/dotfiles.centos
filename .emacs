@@ -244,6 +244,11 @@
   (require 'psvn)
   (setq svn-status-custom-hide-function 'my-svn-status-hide))
 
+(if (locate-library "uniquify")
+    (progn
+      (require 'uniquify)
+      (setq uniquify-buffer-name-style 'forward)))
+
 (if (locate-library "sml-modeline")
     (progn
       (require 'sml-modeline)
