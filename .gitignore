@@ -3,6 +3,8 @@
 # droppings
 foo*
 *~
+\#*
+.\#*
 
 /.Xauthority
 /.aptitude/
@@ -15,6 +17,7 @@ foo*
 /.emacs.d/
 /.gconf/
 /.gnupg/
+/.irssi/default.theme
 /.kde/
 /.lastpass/
 /.lesshst

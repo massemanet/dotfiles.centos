@@ -12,7 +12,7 @@ set +f
 unset  LC_ALL
 unset  LANGUAGE
 unset  LC_CTYPE
-export LANG=`locale -a | grep -i c.utf`
+export LANG=`locale -a | grep -Ei "en_us.utf"`
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
