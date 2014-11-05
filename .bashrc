@@ -59,7 +59,6 @@ function gitstat() {
     fi
     for d in $base
     do
-        echo $d
         echo -n `basename $d`
         echo -n " "
         (
