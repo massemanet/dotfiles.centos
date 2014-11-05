@@ -52,14 +52,19 @@ function fgrep() {
 shopt -s checkwinsize
 
 function gitstat() {
-    base=~/git
-    for d in $base/*
+    if [ -z "$1" ]; then
+        base=~/git/*
+    else
+        base=$1
+    fi
+    for d in $base
     do
+        echo $d
         echo -n `basename $d`
         echo -n " "
         (
             cd $d
-            echo -n `git st | grep -E "On branch|modified" | cut -f4 -d" "`
+            echo -n `git status | grep -E "On branch|modified" | cut -f4 -d" "`
             echo -n "  "
             echo `2>/dev/null git describe --tags HEAD`
         )
