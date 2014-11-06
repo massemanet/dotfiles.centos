@@ -84,6 +84,8 @@ function gitstat() {
             branch=$(echo $stat | cut -f4 -d" ")
             $(echo $stat | grep -q "Not currently") && branch="!"
             uptodate=$($(echo $stat | grep -q "is behind") && echo "!")
+            uptodate=$($(echo $stat | grep -q "is ahead") && echo "*")
+            uptodate=$($(echo $stat | grep -Eq "# Change|# Untra") && echo "#")
             echo -n $branch
             echo -n "  "
             echo -n "("$uptodate")"
