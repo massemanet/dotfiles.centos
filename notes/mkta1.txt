@@ -1,3 +1,0 @@
-yum install --disablerepo=thirdparty git tmux
-yum install automake bash-completion cracklib-devel emacs-nox gcc-c++
-yum install graphwiz klarna_erlang_R15-B03 make rubygem-json rubygems

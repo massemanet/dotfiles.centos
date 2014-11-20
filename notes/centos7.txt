@@ -1,0 +1,28 @@
+OTP=17.3.4
+USER=masse
+
+sudo yum install emacs-nox git bash-completion tmux yum-utils
+sudo yum install cracklib-devel ncurses-devel openssl-devel
+sudo yum groupinstall "Development Tools"
+
+sudo yum install erlang-ssh erlang-parsetools erlang-dialyzer erlang-eunit \
+                 erlang-sasl erlang-erl_interface erlang-edoc
+
+SKIP="wx percept orber megaco jinterface gs eldap diameter cos* common_test"
+git clone git@github.com:erlang/otp.git
+cd otp
+git co OTP-$RELEASE
+(cd lib ; for a in $SKIP; do touch $a/SKIP ; done)
+./otp_build setup --prefix=/opt/erlang/$RELEASE
+make -j12
+sudo make install
+
+sudo useradd -G wheel $USER
+sudo passwd $USER
+
+sudo alternatives --install /usr/local/bin/erl erl /opt/erlang/$REL/bin/erl 90
+sudo alternatives --install /usr/local/bin/erl erl /usr/bin/erl 90
+
+git clone git@github.com:massemanet/dotfiles.centos.git /tmp/dots
+mv /tmp/dots/.git ~
+git reset --hard
