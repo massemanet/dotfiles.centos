@@ -1,7 +1,7 @@
 OTP=17.3.4
 USER=masse
 
-sudo yum install emacs-nox git bash-completion tmux yum-utils
+sudo yum install emacs-nox git bash-completion tmux yum-utils lynx
 sudo yum install cracklib-devel ncurses-devel openssl-devel
 sudo yum groupinstall "Development Tools"
 
