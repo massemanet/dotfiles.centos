@@ -6,6 +6,7 @@ foo*
 \#*
 .\#*
 
+/.ICEauthority
 /.Xauthority
 /.aptitude/
 /.bash_history
@@ -23,9 +24,11 @@ foo*
 /.lesshst
 /.local/
 /.mozilla/
+/.pki/
 /.ssh/
 /.subversion/
 /.xscreensaver
+/.xsession-errors
 /foo*
 /Downloads/
 

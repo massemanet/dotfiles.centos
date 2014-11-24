@@ -20,11 +20,34 @@ sh /media/cdrom/VBoxLinuxAdditions.run
 
 
 # using chromebook/crouton
-  sudo apt-get update
-  sudo apt-get install aptitude
-  sudo aptitude upgrade
-  sudo aptitude install automake make git emacs-nox tmux bash-completion g++
-  sudo aptitude install erlang-nox erlang-dev
+sudo apt-get update
+sudo apt-get install aptitude
+sudo aptitude upgrade
+sudo aptitude install automake make git emacs-nox tmux bash-completion g++
+sudo aptitude install erlang-nox erlang-dev erlang-dialyzer
+
 # as a user
 # copy a private key to ~/.ssh/id_rsa
  chmod 600 ~/.ssh/id_rsa
+
+# building erlang
+REL=maint
+SKIP="percept orber megaco jinterface gs eldap diameter cos* common_test"
+sudo aptitude install libncurses5-dev libssl-dev
+git clone git@github.com:erlang/otp.git
+cd otp
+git co $REL
+(cd lib ; for a in $SKIP; do touch $a/SKIP ; done)
+./otp_build setup --prefix=/opt/erlang/$REL
+make -j12
+sudo make install
+
+REL=maint
+LNK=/usr/local/bin
+for a in /opt/erlang/$REL/bin /usr/bin; do
+    sudo update-alternatives \
+         --install $LNK/erl      erl      $PTH/erl 90 \
+         --slave   $LNK/dialyzer dialyzer $PTH/dialyzer \
+         --slave   $LNK/erlc     erlc     $PTH/erlc \
+         --slave   $LNK/epmd     epmd     $PTH/epmd
+done
