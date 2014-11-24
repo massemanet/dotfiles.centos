@@ -27,7 +27,7 @@ LS=ls ; [ `which gls 2> /dev/null` ] && LS=gls
 DIRCOLS=dircolors ; [ `which gdircolors 2> /dev/null` ] && DIRCOLS=gdircolors
 
 # Enable sane completion
-. /etc/bash_completion
+[ -f /etc/bash_completion ] && . /etc/bash_completion
 
 # emacs
 EMACS=emacs ; which emacs-snapshot > /dev/null 2>&1 && EMACS=emacs-snapshot
@@ -69,30 +69,34 @@ function gitupd() {
 }
 
 function gitstat() {
-    if [ -z "$1" ]; then
-        base=~/git/*
-    else
-        base=$1
-    fi
-    for d in $base
-    do
-        echo -n `basename $d`
-        echo -n " "
-        (
-            cd $d
-            stat=$(git status)
-            branch=$(echo $stat | cut -f4 -d" ")
-            $(echo $stat | grep -q "Not currently") && branch="!"
-            uptodate=$($(echo $stat | grep -q "is behind") && echo "!")
-            uptodate=$($(echo $stat | grep -q "is ahead") && echo "*")
-            uptodate=$($(echo $stat | grep -Eq "# Change|# Untra") && echo "#")
-            echo -n $branch
-            echo -n "  "
-            echo -n "("$uptodate")"
-            echo -n "  "
-            echo $(2>/dev/null git describe --tags HEAD)
-        )
-    done | column -t
+if [ -z "$1" ]; then
+    base=~/git/*;
+else
+    base=$1;
+fi;
+for d in $base; do
+    echo -n `basename $d`;
+    echo -n " ";
+    ( cd $d;
+        stat=$(git status);
+        branch=$(echo $stat | grep -Eo "On branch .*$" | cut -f3 -d" ");
+        [ -z "$branch" ] && \
+            branch=$(echo $stat | \
+            grep -Eo "HEAD detached at .*$|Not currently on any" | \
+            echo "DETACHED");
+        [ -z "$branch" ] && branch="!";
+        uptodate=$($(echo $stat | grep -q "is behind") && echo "!");
+        [ -z "$uptodate" ] && \
+            uptodate=$($(echo $stat | grep -q "is ahead") && echo "*");
+        [ -z "$uptodate" ] && \
+            uptodate=$($(echo $stat | \
+            grep -Eq "# Changes|# Untracked") && echo "#");
+        echo -n $branch;
+        echo -n "  ";
+        echo -n "("$uptodate")";
+        echo -n "  ";
+        echo $(2>/dev/null git describe --tags HEAD) );
+done | column -t
 }
 
 function mygitps1() {
