@@ -10,7 +10,6 @@ foo*
 /.Xauthority
 /.aptitude/
 /.bash_history
-/.bash_logout
 /.cache/
 /.config/
 /.dbus/
@@ -29,21 +28,14 @@ foo*
 /.subversion/
 /.xscreensaver
 /.xsession-errors
-/foo*
-/Downloads/
 
 # erlang droppings
+/.dialyzer_plt
+/.erlang.cookie
 erl_crash.dump
-.erlang.cookie
-*dialyzer_plt
-*.beam
-*.etz
-*.trz
-.rebar/
 
-# git/subversion projects
+# git projects
 /git/
-/svn/
 
 # rpm build dir
 /rpm*/

@@ -20,6 +20,8 @@
 (delete-selection-mode t)
 (column-number-mode t)
 (iswitchb-mode t)
+(fset 'yes-or-no-p 'y-or-n-p)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 ; turn off bad shit
 (if (featurep 'tool-bar)   (tool-bar-mode   -1))
@@ -219,7 +221,13 @@
 
 (defun my-js-setup()
   (autoload 'js2-mode "js2" nil t)
-  (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
+  (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+  (autoload 'json-mode "json" nil t)
+  (add-to-list 'auto-mode-alist '("\\.json$" . json-mode)))
+
+(add-hook 'json-mode-hook
+          (lambda ()
+            (setq js-indent-level 2)))
 
 (add-hook 'js2-mode-hook 'my-js2-mode-hook)
 (defun my-js2-mode-hook ()
@@ -240,14 +248,14 @@
         whitespace-line-column 79)
   (global-whitespace-mode t))
 
+(defun my-distel-setup ()
+  (require 'distel)
+  (distel-setup)
+  (setq erl-reload-dwim t))
+
 (defun my-svn-setup ()
   (require 'psvn)
   (setq svn-status-custom-hide-function 'my-svn-status-hide))
-
-(if (locate-library "uniquify")
-    (progn
-      (require 'uniquify)
-      (setq uniquify-buffer-name-style 'forward)))
 
 (if (locate-library "sml-modeline")
     (progn
@@ -294,10 +302,7 @@
       (require 'erlang-start)
       (my-erlang-setup)
       (if (locate-library "distel")
-          (progn
-            (require 'distel)
-            (distel-setup)
-            (setq erl-reload-dwim t)))))
+          (my-distel-setup))))
 
 (defun my-svn-status-hide (line-info)
   "Hide externals."
@@ -309,13 +314,17 @@
 
 (add-hook 'text-mode-hook 'my-text-mode-hook)
 (defun my-text-mode-hook ()
-  (setq ispell-program-name "hunspell")
-  (require 'rw-hunspell)
-  (setq fill-column 79
-        flyspell-dictionaries (quote ("american" "svenska")))
+  (setq fill-column 79)
+  (if (locate-library "rw-hunspell")
+      (progn
+        (setq ispell-program-name "hunspell")
+        (require 'rw-hunspell)))
   (if (locate-library "highlight-parentheses")
       (highlight-parentheses-mode -1))
-  (flyspell-mode))
+  (if (locate-library "flyspell")
+      (progn
+        (flyspell-mode)
+        (setq flyspell-dictionaries (quote ("american" "svenska"))))))
 
 (add-hook 'comint-mode-hook 'my-comint)
 (defun my-comint ()
@@ -353,7 +362,7 @@
   (interactive)
   (package-refresh-contents)
   (dolist (p '(magit highlight-parentheses rw-hunspell markdown-mode
-                     sml-modeline js2-mode flymake-jshint))
+                     sml-modeline js2-mode flymake-jshint json-mode))
     (progn
       (if (package-installed-p p)
           (message "already installed %s" p)

@@ -30,7 +30,7 @@ DIRCOLS=dircolors ; [ `which gdircolors 2> /dev/null` ] && DIRCOLS=gdircolors
 [ -f /etc/bash_completion ] && . /etc/bash_completion
 
 # emacs
-EMACS=emacs ; which emacs-snapshot > /dev/null 2>&1 && EMACS=emacs-snapshot
+EMACS=emacs
 
 # prompt
 GITPROMPT=/usr/share/git-core/contrib/completion/git-prompt.sh
@@ -52,6 +52,37 @@ function fgrep() {
     set +f
 }
 
+function gitstat () {
+    if [ -z "$1" ]; then
+        base=~/git/*;
+    else
+        base=$1;
+    fi;
+    for d in $base; do
+        echo -n `basename $d`;
+        echo -n " ";
+        ( cd $d;
+          stat=$(git status);
+          branch=$(echo $stat | grep -Eo "On branch .*$" | cut -f3 -d" ");
+          [ -z "$branch" ] && \
+              branch=$(echo $stat | \
+                              grep -Eo "HEAD detached at .*$|Not currently on any" | \
+                              echo "DETACHED");
+          [ -z "$branch" ] && branch="!";
+          uptodate=$($(echo $stat | grep -q "is behind") && echo "!");
+          [ -z "$uptodate" ] && \
+              uptodate=$($(echo $stat | grep -q "is ahead") && echo "*");
+          [ -z "$uptodate" ] && \
+              uptodate=$($(echo $stat | \
+                                  grep -Eq "# Changes|# Untracked") && echo "#");
+          echo -n $branch;
+          echo -n "  ";
+          echo -n "("$uptodate")";
+          echo -n "  ";
+          echo $(2>/dev/null git describe --tags HEAD) );
+    done | column -t
+}
+
 function gitupd() {
     if [ -z "$1" ]; then
         base=~/git/*
@@ -66,37 +97,6 @@ function gitupd() {
             git remote update 1> /dev/null
         )
     done
-}
-
-function gitstat() {
-if [ -z "$1" ]; then
-    base=~/git/*;
-else
-    base=$1;
-fi;
-for d in $base; do
-    echo -n `basename $d`;
-    echo -n " ";
-    ( cd $d;
-        stat=$(git status);
-        branch=$(echo $stat | grep -Eo "On branch .*$" | cut -f3 -d" ");
-        [ -z "$branch" ] && \
-            branch=$(echo $stat | \
-            grep -Eo "HEAD detached at .*$|Not currently on any" | \
-            echo "DETACHED");
-        [ -z "$branch" ] && branch="!";
-        uptodate=$($(echo $stat | grep -q "is behind") && echo "!");
-        [ -z "$uptodate" ] && \
-            uptodate=$($(echo $stat | grep -q "is ahead") && echo "*");
-        [ -z "$uptodate" ] && \
-            uptodate=$($(echo $stat | \
-            grep -Eq "# Changes|# Untracked") && echo "#");
-        echo -n $branch;
-        echo -n "  ";
-        echo -n "("$uptodate")";
-        echo -n "  ";
-        echo $(2>/dev/null git describe --tags HEAD) );
-done | column -t
 }
 
 function mygitps1() {
