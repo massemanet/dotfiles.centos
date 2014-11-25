@@ -17,7 +17,7 @@ shopt -s checkwinsize
 unset  LC_ALL
 unset  LANGUAGE
 unset  LC_CTYPE
-export LANG=`locale -a | grep -Ei "c.utf"`
+export LANG=`locale -a | grep -Ei "en.us.utf"`
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
