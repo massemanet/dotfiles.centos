@@ -1,10 +1,10 @@
 /.localbashrc
 
 # droppings
-foo*
 *~
-\#*
 .\#*
+\#*
+foo*
 
 /.ICEauthority
 /.Xauthority
@@ -22,6 +22,9 @@ foo*
 /.lastpass/
 /.lesshst
 /.local/
+/.npm/
+/.psci_modules/
+/.purescript/
 /.mozilla/
 /.pki/
 /.ssh/
@@ -30,9 +33,10 @@ foo*
 /.xsession-errors
 
 # erlang droppings
+*.beam
+erl_crash.dump
 /.dialyzer_plt
 /.erlang.cookie
-erl_crash.dump
 
 # git projects
 /git/
