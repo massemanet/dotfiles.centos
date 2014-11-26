@@ -22,4 +22,4 @@
   alias = "!git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'"
 
 [push]
-	default = simple
+	default = tracking # this should be "simple", but git 1.7 :<
