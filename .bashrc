@@ -34,7 +34,7 @@ BASH_COMPLETION=/etc/bash_completion
 [ -f ~/.gitfunctions ] && . ~/.gitfunctions
 
 # emacs
-export EDITOR=$EMACS
+export EDITOR=emacs
 
 # gitified prompt
 function mygitps1() {
