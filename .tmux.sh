@@ -29,7 +29,7 @@ else
 fi
 
 # panes alist
-panes=$(tmux list-panes -F "#P:#{pane_current_command}\n")
+panes=$(tmux list-panes -F "#P:#{pane_current_command}\n")  # introduced in 1.7
 
 # move emacs, if it exists, to pane 0 (narrrow) or pane 1 (wide)
 emacspane=$(echo $panes | grep -Eo "[0-9]*:emacs" | cut -f1 -d":" | head -1)
@@ -43,7 +43,7 @@ fi
 
 # select a bash window, if there is one
 bashpane=$(echo $panes | grep -Eo "[0-9]*:bash" | cut -f1 -d":" | head -1)
-[ -n $bashpane ] && tmux select-pane -t $bashpane
+[ -n "$bashpane" ] && tmux select-pane -t $bashpane
 
 # attach if needed
 $(tmux list-session | grep -q attached) && attachedp="t" || attachedp=""
