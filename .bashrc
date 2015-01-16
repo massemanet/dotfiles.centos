@@ -27,8 +27,8 @@ LS=ls ; [ `which gls 2> /dev/null` ] && LS=gls
 DIRCOLS=dircolors ; [ `which gdircolors 2> /dev/null` ] && DIRCOLS=gdircolors
 
 # Enable sane completion
-BASH_COMPLETION=/etc/bash_completion
-[ -f $BASH_COMPLETION ] && . $BASH_COMPLETION
+bash_completion=/etc/bash_completion
+[ -f $bash_completion ] && . $bash_completion
 
 # define some git helpers
 [ -f ~/.gitfunctions ] && . ~/.gitfunctions
@@ -69,8 +69,6 @@ function mygitdir () {
 
 PROMPT_COMMAND='if [ $? -ne 0 ]; then ERROR_FLAG=1; else ERROR_FLAG=; fi'
 if [ "$TERM" != "dumb" ]; then
-    # enable color support of grep
-    export GREP_OPTIONS='--color=auto'
     # enable color support of ls
     lscols=auto
     [ -f $HOME/.dircolors ] && eval "`$DIRCOLS -b $HOME/.dircolors`"
@@ -96,6 +94,7 @@ else
 fi
 
 # macos doesn't have pgrep/pkill
+grep()  { /bin/grep --color=auto "$@"; }
 fgrep() { ~/.fgrep.sh "$@"; }
 tmx()   { ~/.tmux.sh; }
 pgrep() { ps -ef > $$ ; egrep -i "$1" $$ ; rm $$ ; }
