@@ -53,7 +53,7 @@ function mygitps1() {
 }
 
 # find the basename of the dir that contains the current .git
-function mygitdir () {
+function mygitdir() {
     local D;
     D=`git rev-parse --git-dir 2> /dev/null`
     [ "$D" == ".git" ] && D="$PWD/$D"
@@ -94,19 +94,19 @@ else
 fi
 
 # macos doesn't have pgrep/pkill
-grep()  { /bin/grep --color=auto "$@"; }
-fgrep() { ~/.fgrep.sh "$@"; }
-tmx()   { ~/.tmux.sh; }
-pgrep() { ps -ef > $$ ; egrep -i "$1" $$ ; rm $$ ; }
-pkill() { pgrep "$1" | awk '{print $2}' | xargs sudo kill -9 ; }
-dir()   { $LS --color=$lscols -lFh "$@";}
-dirt()  { dir -rt "$@";}
-dird()  { dir -d "$@";}
-dira()  { for d in "${@:-.}"; do (cd "$d";pwd; dird .*); done;}
-rea()   { history | egrep "${@:-}";}
-m()     { less "$@";}
-e()     { emacs -nw "$@";}
-c()     { cat "$@";}
+function grep()  { /bin/grep --color=auto "$@"; }
+function fgrep() { ~/.fgrep.sh "$@"; }
+function tmx()   { ~/.tmux.sh; }
+function pgrep() { ps -ef > $$ ; egrep -i "$1" $$ ; rm $$ ; }
+function pkill() { pgrep "$1" | awk '{print $2}' | xargs sudo kill -9 ; }
+function dir()   { $LS --color=$lscols -lFh "$@";}
+function dirt()  { dir -rt "$@";}
+function dird()  { dir -d "$@";}
+function dira()  { for d in "${@:-.}"; do (cd "$d";pwd; dird .*); done;}
+function rea()   { history | egrep "${@:-}";}
+function m()     { less "$@";}
+function e()     { emacs -nw "$@";}
+function c()     { cat "$@";}
 
 ## history
 # lots of history
