@@ -21,11 +21,11 @@ fi
 W=$(tmux list-sessions | grep -Eo "\[[0-9]*x" | cut -f1 -d"x" | cut -f2 -d"[")
 [ $W -lt 240 ] && narrowp="t" || narrowp=""
 if [ -n "$narrowp" ]; then
-    tmux -q set-window-option main-pane-width 81  > /dev/null
-    tmux -q select-layout main-vertical > /dev/null
+    tmux -q set-window-option main-pane-width 81
+    tmux -q select-layout main-vertical
 else
-    tmux -q select-layout even-horizontal > /dev/null
-    tmux -q resize-pane -t 1 -x 81 > /dev/null
+    tmux -q select-layout even-horizontal
+    tmux -q resize-pane -t 1 -x 81
 fi
 
 # panes alist
