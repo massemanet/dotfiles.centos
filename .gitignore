@@ -18,6 +18,7 @@ foo*
 /.emacs.d/
 /.gconf/
 /.gnupg/
+/.ido.last
 /.irssi/default.theme
 /.kde/
 /.lastpass/
