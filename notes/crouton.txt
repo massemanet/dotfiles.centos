@@ -1,0 +1,9 @@
+  using crouton on a ChromeBook is pretty awesome.
+
+$ sudo sh ~/Downloads/crouton -r jessie -t extension
+
+$ sudo apt-get install \
+    apt-file aptitude \
+    bash-completion dropbear emacs-nox git tmux gcc automake autoconf \
+    erlang-dev erlang-inets erlang-mode erlang-wx erlang-xmerl \
+    libpangoxft-1.0-0 libxss1 spotify-client xdg-utils
