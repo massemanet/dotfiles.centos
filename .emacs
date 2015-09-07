@@ -8,11 +8,11 @@
                 "/usr/lib64/erlang/lib/tools-*/emacs/*.el"
                 "/usr/lib/erlang/lib/tools-*/emacs/*.el")))
   (dolist (f0 (nreverse ps))
-    (let ((f (car (file-expand-wildcards f0))))
+    (let ((f (car (ignore-errors (file-expand-wildcards f0)))))
       (when (and (stringp f) (file-exists-p f))
         (add-to-list 'load-path (file-name-directory f))))))
 
-; turn on good shit
+;; turn on good shit
 (set-language-environment "ASCII")
 (show-paren-mode t)
 (transient-mark-mode t)
