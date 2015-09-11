@@ -6,20 +6,21 @@
 
 -module('user_default').
 -author('Mats Cronqvist').
+
 -export([ineti/0,
-         ports/0
-         ,export_all/1
-         ,tab/0
-         ,long/1,flat/1,dump/1
-         ,sig/1,sig/2
-         ,e/2
-         ,kill/1
-         ,pi/1,pi/2
-         ,os/1
-         ,bt/1
-         ,pid/1
-         ,lm/0
-         ,redbug/0,redbug/3]).
+         sig/1,sig/2,sig/3,
+         ports/0,
+         export_all/1,
+         tab/0,
+         long/1,flat/1,dump/1,
+         e/2,
+         kill/1,
+         pi/1,pi/2,
+         os/1,
+         callstack/1,
+         bt/1,
+         pid/1,
+         lm/0]).
 
 %% recompiles M with export_all without access to the source.
 export_all(M) ->
@@ -29,35 +30,47 @@ export_all(M) ->
       {ok,{_,[{abstract_code,{_,AC}}]}} = beam_lib:chunks(F,[abstract_code]),
       {ok,_,B} = compile:forms(AC,[export_all]),
       code:soft_purge(M),
-      code:load_binary(M,"",B)
+      code:load_binary(M,F,B)
   end.
 
 lm() ->
-    T = fun(L) -> [X || X <- L, element(1,X) =:= time] end,
-    Tm = fun(M) -> T(M:module_info(compile)) end,
-    Tf = fun(F) -> {ok,{_,[{_,I}]}}=beam_lib:chunks(F,[compile_info]),T(I) end,
-    Load = fun(M) -> c:l(M),M end,
+  MD5File =
+    fun(F) ->
+        case beam_lib:md5(F) of
+          {ok,{_,<<I:128>>}} -> [I];
+          _ -> undefined
+        end
+    end,
 
-    [Load(M) || {M,F} <- code:all_loaded(), is_beamfile(F), Tm(M)<Tf(F)].
+  MD5Loaded =
+    fun(M) ->
+        proplists:get_value(vsn,M:module_info(attributes))
+    end,
 
-is_beamfile(F) ->
-    ok == element(1,file:read_file_info(F)) andalso
-        ".beam" == filename:extension(F).
+  Load =
+    fun(M,"") ->
+        {cannot_load,M};
+       (M,F) ->
+        code:purge(M),
+        {module,M} = code:load_abs(filename:rootname(F,".beam")),
+        M
+    end,
+
+  [Load(M,F) || {M,F} <- code:all_loaded(), MD5Loaded(M) =/= MD5File(F)].
 
 tab() ->
   N=node(),
   io:setopts([{expand_fun,fun(B)->rpc:call(N,edlin_expand,expand,[B]) end}]).
 
-sig(M) -> sig(M,'').
-sig(M,F) when is_atom(M),is_atom(F) -> otp_doc:sig(M,F).
-
 dump(Term)->
-  {ok,FD}=file:open(filename:join([os:getenv("HOME"),"erlang.dump"]),[write]),
-  try wr(FD,"~p.~n",Term)
+  File = filename:join([os:getenv("HOME"),"erlang.dump"]),
+  {ok,FD}=file:open(File,[write]),
+  try wr(FD,"~p.~n",Term),File
   after file:close(FD)
   end.
 
-flat(L) -> wr("~s~n",lists:flatten(L)).
+flat(Term) -> flat("~p~n",[Term]).
+flat(Form,List) -> wr("~s",io_lib:format(Form,List)).
 
 long(X) -> wr(X).
 
@@ -72,13 +85,29 @@ pi(P,Item) -> process_info(pid(P),Item).
 os(Cmd) ->
   lists:foreach(fun(X)->wr("~s~n",X)end,string:tokens(os:cmd(Cmd),"\n")).
 
+sig(M) ->
+  sig(M,'').
+sig(M,F) ->
+  sig(M,F,'').
+sig(M,F,A) ->
+  {ok,{M,[{"Abst",Chunk}]}} = beam_lib:chunks(code:which(M),["Abst"]),
+  {_,Abst} = binary_to_term(Chunk),
+  Exports = lists:append([FAs || {attribute,_,export,FAs} <- Abst]),
+  Arg = fun(AA) -> string:join([erl_pp:expr(A1) || A1 <- AA],",") end,
+  Grd = fun(GG) -> erl_pp:guard(GG) end,
+  PP  = fun(M0,F0,A0,G) -> flat("~w:~w(~s) ~s~n",[M0,F0,Arg(A0),Grd(G)]) end,
+  length([[PP(M,Fn,AA,GG) || {clause,_,AA,GG,_} <- As]
+          || {function,_,Fn,Ar,As} <- Abst,
+             A == '' orelse A == Ar,
+             F == '' orelse F == Fn,
+             lists:member({Fn,Ar},Exports)]).
+
 wr(E) -> wr("~p.~n",E).
 wr(F,E) -> wr(user,F,E).
 wr(FD,F,E) -> io:fwrite(FD,F,[E]).
 
-redbug()->redbug:help().
-redbug(A,B,C)->redbug:start(A,B,C).
-
+callstack(P) ->
+  [string:strip(e(2,string:tokens(L,"(+)"))) || L<- bt(P), $0 =:= hd(L)].
 bt(P) ->
   string:tokens(binary_to_list(e(2,process_info(pid(P),backtrace))),"\n").
 
@@ -89,8 +118,6 @@ pid({0,I2,I3}) when is_integer(I2) -> c:pid(0,I2,I3);
 pid(I2) when is_integer(I2) -> pid({0,I2,0}).
 
 ineti() ->
-  io:fwrite("~15s:~-5s ~15s:~-5s ~7s ~9s ~s/~s~n",
-            ["local","port","remote","port","type","status","sent","recvd"]),
   lists:foreach(fun ineti/1,ports()).
 
 ineti(P) ->

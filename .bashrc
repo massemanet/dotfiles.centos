@@ -23,11 +23,12 @@ set +f
 shopt -s checkwinsize
 
 # check for GNU ls
-LS=ls ; [ `which gls 2> /dev/null` ] && LS=gls
-DIRCOLS=dircolors ; [ `which gdircolors 2> /dev/null` ] && DIRCOLS=gdircolors
+GREP=grep
+LS=ls
+DIRCOLORS=dircolors
+bash_completion=/etc/bash_completion
 
 # Enable sane completion
-bash_completion=/etc/bash_completion
 [ -f $bash_completion ] && . $bash_completion
 
 # define some git helpers
@@ -53,7 +54,7 @@ function mygitps1() {
 }
 
 # find the basename of the dir that contains the current .git
-function mygitdir() {
+function mygitdir () {
     local D;
     D=`git rev-parse --git-dir 2> /dev/null`
     [ "$D" == ".git" ] && D="$PWD/$D"
@@ -94,7 +95,7 @@ else
 fi
 
 # macos doesn't have pgrep/pkill
-function grep()  { /bin/grep --color=auto "$@"; }
+function grep()  { $GREP --color=auto "$@"; }
 function fgrep() { ~/.fgrep.sh "$@"; }
 function tmx()   { ~/.tmux.sh; }
 function pgrep() { ps -ef > $$ ; egrep -i "$1" $$ ; rm $$ ; }

@@ -6,12 +6,12 @@ set -f
 [ -n "$2" ] && d="$2" || d="."
 [ -n "$3" ] && n="-name $3"
 find "$d" \
-    -path "*/.svn"   -prune -o \
-    -path "*/.git"   -prune -o \
-    -path "*/.eunit" -prune -o \
-    -path "*/.deps"  -prune -o \
-    -path "*/#*"     -prune -o \
-    -path "*~"       -prune -o \
-    -type f $n \
-    -exec grep -inIH "$1" {} \;
+     -path "*/.svn"   -prune -o \
+     -path "*/.git"   -prune -o \
+     -path "*/.eunit" -prune -o \
+     -path "*/.deps"  -prune -o \
+     -path "*/#*"     -prune -o \
+     -path "*~"       -prune -o \
+     -type f $n \
+     -exec grep -inIH "$1" {} \;
 set +f

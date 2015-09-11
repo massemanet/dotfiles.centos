@@ -91,6 +91,12 @@
   (interactive)
   (recenter 1))
 
+(defun macroexpand-point (sexp)
+  (interactive (list (sexp-at-point)))
+  (with-output-to-temp-buffer "*el-macroexpansion*"
+    (pp (macroexpand sexp)))
+  (with-current-buffer "*el-macroexpansion*" (emacs-lisp-mode)))
+
 (defun my-erlang-setup ()
   (setq safe-local-variable-values
         (quote ((allout-layout . t)
@@ -380,6 +386,7 @@
     (package-install p)))
 
 ;; automatically added stuff
+
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
