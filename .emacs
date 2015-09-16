@@ -1,21 +1,27 @@
 ;; -*- mode: lisp -*-
 
+(defvar my-paths
+  '("~/elisp/*.el"
+    "~/git/distel/elisp/*.el"
+    "/opt/*/lib/erlang/lib/tools-*/emacs/*.el"
+    "/opt/*/lib64/erlang/lib/tools-*/emacs/*.el"
+    "/usr/local/lib/erlang/lib/tools-*/emacs/*.el"
+    "/usr/lib64/erlang/lib/tools-*/emacs/*.el"
+    "/usr/lib/erlang/lib/tools-*/emacs/*.el")
+  "paths to try for erlang-related *.el files")
+
 (defvar my-packages
   '(magit highlight-parentheses rw-hunspell markdown-mode
           purescript-mode sml-modeline js2-mode flymake-jshint json-mode)
   "my packages, to be installed by package")
 
 ;; try to find and add my favourite paths
-(let ((ps (list "~/elisp/*.el"
-                "~/git/distel/elisp/*.el"
-                "/opt/*/lib/erlang/lib/tools-*/emacs/*.el"
-                "/opt/*/lib64/erlang/lib/tools-*/emacs/*.el"
-                "/usr/lib64/erlang/lib/tools-*/emacs/*.el"
-                "/usr/lib/erlang/lib/tools-*/emacs/*.el")))
-  (dolist (f0 (nreverse ps))
-    (let ((f (car (ignore-errors (file-expand-wildcards f0)))))
-      (when (and (stringp f) (file-exists-p f))
-        (add-to-list 'load-path (file-name-directory f))))))
+(mapc
+ (lambda (x)
+   (let ((f (car (ignore-errors (file-expand-wildcards x)))))
+     (when (and (stringp f) (file-exists-p f))
+       (add-to-list 'load-path (file-name-directory f)))))
+ (nreverse (copy-tree my-paths)))
 
 ;; turn on good shit
 (set-language-environment "ASCII")
@@ -379,7 +385,7 @@
 (defun my-elpa ()
   (interactive)
   (package-refresh-contents)
-  (dolist (p my-packages)
+  (dolist (p (copy-tree my-packages))
     (if (not (package-installed-p p))
         (package-install p)))
   (dolist (p (package-menu--find-upgrades))
