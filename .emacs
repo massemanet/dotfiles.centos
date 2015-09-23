@@ -32,7 +32,6 @@
 (column-number-mode t)
 (ido-mode t)
 (fset 'yes-or-no-p 'y-or-n-p)
-;;(add-hook 'after-init-hook #'global-flycheck-mode)
 
 ; turn off bad shit
 (if (featurep 'tool-bar)   (tool-bar-mode   -1))

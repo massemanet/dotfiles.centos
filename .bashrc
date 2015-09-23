@@ -72,7 +72,7 @@ PROMPT_COMMAND='if [ $? -ne 0 ]; then ERROR_FLAG=1; else ERROR_FLAG=; fi'
 if [ "$TERM" != "dumb" ]; then
     # enable color support of ls
     lscols=auto
-    [ -f $HOME/.dircolors ] && eval "`$DIRCOLS -b $HOME/.dircolors`"
+    [ -f $HOME/.dircolors ] && eval "`$DIRCOLORS -b $HOME/.dircolors`"
     # to get emacs -nw to use 256 colors
     export TERM=xterm-256color
     # set a fancy prompt
