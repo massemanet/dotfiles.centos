@@ -3,9 +3,9 @@
 #
 # centos/debian style
 
-GREP=grep
-LS=ls
-DIRCOLORS=dircolors
+GREP=$(which grep)
+LS=$(which ls)
+DIRCOLORS=$(which dircolors)
 bash_completion=/etc/bash_completion
 
 # one path to rule them all
