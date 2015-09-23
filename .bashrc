@@ -1,6 +1,12 @@
 # -*- mode: shell-script -*-
 # ~/.bashrc: executed by bash(1) for non-login shells.
+#
 # centos/debian style
+
+GREP=grep
+LS=ls
+DIRCOLORS=dircolors
+bash_completion=/etc/bash_completion
 
 # one path to rule them all
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
@@ -21,12 +27,6 @@ set +f
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
-
-# check for GNU ls
-GREP=grep
-LS=ls
-DIRCOLORS=dircolors
-bash_completion=/etc/bash_completion
 
 # Enable sane completion
 [ -f $bash_completion ] && . $bash_completion
