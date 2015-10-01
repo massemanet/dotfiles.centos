@@ -3,6 +3,8 @@
 #
 # centos/debian style
 
+unalias -a
+
 GREP=$(which grep)
 LS=$(which ls)
 DIRCOLORS=$(which dircolors)
