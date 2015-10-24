@@ -1,0 +1,12 @@
+# as vagrant user
+$ sudo useradd -G admin -s /bin/bash masse
+$ sudo passwd masse
+
+# as user
+$ sudo aptitude install deborphan git emacs24-nox bash-completion
+$ sudo cp /vagrant/id_rsa ~/.ssh/
+$ sudo chown masse:masse ~/.ssh/id_rsa
+$ git clone git@github.com:massemanet/dotfiles.centos.git
+$ mv dotfiles.centos/.git ~
+$ git reset --hard
+$ rm -rf dotfiles.centos
