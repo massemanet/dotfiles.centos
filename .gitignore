@@ -32,6 +32,7 @@ foo*
 /.pki/
 /.ssh/
 /.subversion/
+/.sudo_as_admin_successful
 /.xscreensaver
 /.xsession-errors
 
