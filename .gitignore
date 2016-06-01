@@ -33,6 +33,7 @@ foo*
 /.ssh/
 /.subversion/
 /.sudo_as_admin_successful
+/.wget-hsts
 /.xscreensaver
 /.xsession-errors
 
