@@ -50,6 +50,7 @@ function mygitps1() {
 /origin\//   {next}
 /upstream\// {next}
 /tag:/       {next}
+/->/       {next}
              {print $1}'
         done | head -1
     fi
