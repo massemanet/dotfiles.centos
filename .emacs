@@ -11,7 +11,7 @@
   "paths to try for erlang-related *.el files")
 
 (defvar my-packages
-  '(magit highlight-parentheses rw-hunspell markdown-mode
+  '(magit highlight-parentheses markdown-mode
           purescript-mode sml-modeline js2-mode flymake-jshint json-mode)
   "my packages, to be installed by package")
 
@@ -55,7 +55,7 @@
  scroll-down-aggressively 0.1
  scroll-up-aggressively   0.1
  special-display-regexps  nil
- user-mail-address        "masse@klarna.com"
+ user-mail-address        "masse@cronqvi.st"
  utf-translate-cjk-mode   nil
  visible-bell             t)
 
@@ -190,14 +190,9 @@
               (file-expand-wildcards (concat (updir 2 f) "/deps/*/" base)))
              (t
               nil)))
-          (defun klarna-paths (f base)
-            (if (string= (file-name-nondirectory (updir 3 f)) "lib")
-              (file-expand-wildcards
-               (concat (updir 4 f) "/test/shared/" base))))
           (defun epaths(base)
             (interactive)
-            (append (klarna-paths (buffer-file-name) base)
-                    (rebar-paths (buffer-file-name) base)
+            (append (rebar-paths (buffer-file-name) base)
                     (erlc-paths (buffer-file-name) base)))
 
           (setq flymake-no-changes-timeout 3)
@@ -377,8 +372,8 @@
       (package-initialize)
       (setq package-archives
             '(("gnu" . "http://elpa.gnu.org/packages/")
+              ("melpa" . "https://melpa.org/packages/")
               ("marmalade" . "https://marmalade-repo.org/packages/")
-;              ("melpa" . "http://melpa.milkbox.net/packages/")
             ))))
 (package-installed-p 'magit)
 
